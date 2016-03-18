@@ -10,10 +10,10 @@ define(['backbone'], function(Backbone){
                 return "Вы забыли ввести и логин, и пароль."
             };
             if( attrs.login == "" ) {
-                return "Вы забыли логин."
+                return "Вы забыли ввести логин."
             };
             if( attrs.password == "" ) {
-                return "Вы забыли пароль."
+                return "Вы забыли ввести пароль."
             };
         }
     });

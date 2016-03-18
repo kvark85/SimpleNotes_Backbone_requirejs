@@ -11,9 +11,6 @@ define([
 
         initialize: function() {
             this.user= new zzzUserModel();
-            this.user.on('invalid', function(model, error) {
-                alert(error);
-            });
             this.render();
         },
 

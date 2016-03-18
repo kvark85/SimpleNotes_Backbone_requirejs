@@ -9,7 +9,6 @@ define(['backbone',
       this.render();
 
       this.collection.on('change', function(){
-        console.log('111');
         this.render();
       });
     },
