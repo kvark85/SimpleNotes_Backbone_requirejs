@@ -1,3 +1,5 @@
+var app = app || {};
+
 define(['backbone',
       'app/loginContent/loginContent_View',
       'app/loginContent/user_Model',
@@ -40,7 +42,8 @@ define(['backbone',
         todoCollection.fetch();
     },
     zzz: function() {
-        var zzz = new zzzView();
+        new zzzView({router: this});
+        app.router = this;
     }
   });
   return Router;
