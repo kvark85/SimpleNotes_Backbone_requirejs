@@ -1,4 +1,4 @@
-define(['backbone', 'text!templates/zzz_header/zzz_header_Template.html'], function(Backbone, template){
+define(['backbone', 'text!templates/loginTemplates/loginHeaderTemplate.html'], function(Backbone, template){
   var View = Backbone.View.extend({
     el: '#head',
     template: _.template(template),

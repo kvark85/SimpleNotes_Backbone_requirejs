@@ -1,50 +1,36 @@
 var app = app || {};
 
 define(['backbone',
-      'app/loginContent/loginContent_View',
-      'app/loginContent/user_Model',
-      'app/todosContent/todosContent_View',
-      'app/zzz/zzz_View',
-      'app/todosContent/todoCollection_Model'],
+        'app/login/loginView',
+        'app/todo/todoView',
+        'app/autoLiginModel/autoLoginModel'],
     function(Backbone,
-             rLoginView,
-             rLoginModel,
-             rTodoView,
-             zzzView,
-             rTodoCollectionModel){
+             LoginView,
+             TodoView,
+             AutoLoginModel){
 
-  var Router = Backbone.Router.extend({
-    routes: {
-      "": "login",
-      "todo": "todo",
-      "zzz": "zzz"
-    },
-    login: function () {
-      var loginModel = new rLoginModel();
-      new rLoginView( {model: loginModel} );
+        var Router = Backbone.Router.extend({
+            routes: {
+                "": "login",
+                "todo": "todo"
+            },
 
-      loginModel.on('change:acces', function(){
-         this.navigate("todo", true);
-      }, this);
-      loginModel.on('invalid', function(model, error) {
-        alert(error);
-      });
-      loginModel.fetch();
-    },
-    todo: function () {
-      var todoCollection = new rTodoCollectionModel();
-      var a = new rTodoView( {collection: todoCollection} );
+            initialize: function(options) {
+                app.router = this;
+                this.autoLoginModel = new AutoLoginModel();
+                this.autoLoginModel.on('change:acces', function(){
+                    app.router.navigate("todo", true);
+                });
+                this.autoLoginModel.fetch();
+            },
 
+            login: function() {
+                new LoginView({router: this});
+            },
+            todo: function () {
+                new TodoView({router: this});
 
-        todoCollection.add({'title': "QWERTY", 'password': "0"});
-
-
-        todoCollection.fetch();
-    },
-    zzz: function() {
-        new zzzView({router: this});
-        app.router = this;
-    }
-  });
-  return Router;
-});
+            }
+        });
+        return Router;
+    });

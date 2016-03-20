@@ -1,10 +1,10 @@
 define(['backbone'], function(Backbone){
     var Model = Backbone.Model.extend({
         defaults: {
-            login: "",
-            password: ""
+            login: "www",
+            password: "123"
         },
-        url: '/api/login.php',
+        url: '/api2/login.php',
         validate: function(attrs) {
             if( attrs.login === "" && attrs.password === "" ) {
                 return "Вы забыли ввести и логин, и пароль."

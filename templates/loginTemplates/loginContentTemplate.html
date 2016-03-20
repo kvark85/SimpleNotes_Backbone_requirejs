@@ -6,13 +6,13 @@
       <div class="form-group">
         <label for="login">Ник или E-mail</label>
         <input class="form-control" id="login" placeholder="Ник или E-mail" type="text" value="<%= login %>">
-        <p>тестовый логин: "aaa" (английскими)</p>
+        <span class="help-block">(тестовый логин: "www")</span>
       </div>
 
       <div class="form-group">
         <label for="password">Пароль</label>
         <input class="form-control" id="password" placeholder="Пароль" type="password" value="<%= password %>">
-        <p>тестовый пароль: "123"</p>
+        <span class="help-block">(тестовый пароль: "123")</span>
       </div>
 
       <div class="checkbox">
@@ -21,7 +21,12 @@
         </label>
       </div>
 
-      <button id="submitButton" type="submit" class="btn btn-default">Войти</button>
+      <button id="submitButton" type="submit" class="btn btn-info">Войти</button>
+
+      <div class="vertical-margin-row">
+        <button type="button" id="registry" class="btn btn-default btn-block">Зарегистрироваться</button>
+        <button type="button" id="forgot-pass" class="btn btn-default btn-block">Забыли пароль</button>
+      </div>
     </div>
   </div>
 </div>
