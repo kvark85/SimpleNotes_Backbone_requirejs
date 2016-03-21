@@ -2,11 +2,11 @@ var app = app || {};
 
 define(['backbone',
         'app/login/loginView',
-        'app/todo/todoView',
+        'app/todo/generalView',
         'app/autoLiginModel/autoLoginModel'],
     function(Backbone,
              LoginView,
-             TodoView,
+             GeneralView,
              AutoLoginModel){
 
         var Router = Backbone.Router.extend({
@@ -28,7 +28,7 @@ define(['backbone',
                 new LoginView({router: this});
             },
             todo: function () {
-                new TodoView({router: this});
+                new GeneralView({router: this});
 
             }
         });
