@@ -15,7 +15,10 @@ define([
                 this.todoListCollection.fetch({
                     success: function() {
                         this.render();
-                    }.bind(this)
+                    }.bind(this),
+                    error: function() {
+                        app.router.navigate("", true);
+                    }
                 });
             },
 
