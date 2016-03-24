@@ -2,7 +2,8 @@ define(['backbone'], function(Backbone){
     var Model = Backbone.Model.extend({
         defaults: {
             login: "www",
-            password: "123"
+            password: "123",
+            needForgot: false
         },
         url: '/api2/login.php',
         validate: function(attrs) {

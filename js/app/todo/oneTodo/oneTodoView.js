@@ -5,6 +5,9 @@ define(['backbone', 'text!templates/todoTemplates/oneTodoTemplate.html'], functi
     template: _.template(template),
 
     render: function(){
+      if (this.model.get('completed') === "1") {
+        this.$el.addClass('list-group-item-success');
+      }
       this.$el.html( this.template( this.model.toJSON() ) );
       return this;
     }

@@ -12,6 +12,7 @@ define(['backbone',
         var Router = Backbone.Router.extend({
             routes: {
                 "": "login",
+                "#": "todo",
                 "todo": "todo"
             },
 

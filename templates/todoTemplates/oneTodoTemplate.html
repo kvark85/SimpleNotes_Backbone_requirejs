@@ -1,15 +1,20 @@
 ﻿<div class="row">
-  <div class="col-xs-2 text-center">
-    <a href="#">
-      <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
-    </a>
+  <div class="col-xs-2 text-center todo-ison">
+    <input id="<%= todo_id %>"  type="checkbox" class="todo-checkbox" <%= (completed === "1") ? 'checked="checked"' : '' %> />
+
+    <label for="<%= todo_id %>">
+      <span class="ready"><i class="glyphicon glyphicon-ok-sign"></i></span>
+      <span class="not-ready"><i class="glyphicon glyphicon-remove-sign"></i></span>
+    </label>
   </div>
 
-  <div class="col-xs-8"><%= todo %></div>
+  <div class="col-xs-8">
+    <span class="note-show"><%= todo %></span>
+    <span><input class="form-control note-edit" type="text"></span></span>
+  </div>
 
-  <div class="col-xs-2 text-center">
-    <a href="#">
-      <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-    </a>
+  <div class="col-xs-2 text-center todo-ison">
+    <button class="button-img note-show"><i class="glyphicon glyphicon-trash"></i></button>
+    <button class="button-img note-edit"><i class="glyphicon glyphicon-floppy-disk"></i></button>
   </div>
 </div>

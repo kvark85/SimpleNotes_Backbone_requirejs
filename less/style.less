@@ -1,11 +1,64 @@
-body{
-  min-width: 240px;
-}
-
-.vertical-margin-row {
-  margin: 20px 0;
-}
-
-.full-width {
+// ----- WAITER START -----
+.waiter-field {
   width: 100%;
+  height: 100%;
+  display: table;
+  text-align: center;
 }
+.waiter {
+  display: table-cell;
+  vertical-align: middle;
+
+}
+// ----- WAITER END -----
+
+
+// ----- NOTE START -----
+.todo-ison {
+  font-size: (@font-size-base * 1.5);
+  color: @brand-primary;
+}
+.button-img{
+  border: none;
+  background-color: transparent;
+}
+.note-show {
+  display: inline-block;
+}
+.note-edit {
+  display: none;
+}
+.now-modified {
+  .note-show {
+    display: none;
+  }
+  .note-edit {
+    display: inline-block;
+  }
+
+}
+    // ----- NOTE CHECKBOX START -----
+    .todo-checkbox {
+      display:none;
+      + label {
+        .ready {
+          font-size: (@font-size-base * 1.5);
+          display: none;
+        }
+        .not-ready {
+          font-size: (@font-size-base * 1.5);
+          display: inline-block;
+        }
+      }
+      &:checked + label {
+        .ready {
+          display: inline-block;
+        }
+        .not-ready {
+          display: none;
+
+        }
+      }
+    }
+    // ----- NOTE CHECKBOX END -----
+// ----- NOTE START -----
