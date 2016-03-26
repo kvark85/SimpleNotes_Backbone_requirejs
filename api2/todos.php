@@ -1,9 +1,5 @@
 <?php
-
-//Открытие сессии
 require_once('startsession.php');
-
-//Загрузка переменных для коннекта с базой данных
 require_once('connectvars.php');
 
 $sn_user_id = isset($_SESSION['sn_user_id']) ? $_SESSION['sn_user_id'] : "";
@@ -29,5 +25,5 @@ if (substr($strResponse, -1) == ',' ) {         // если в конце зап
 $strResponse = $strResponse . ']';
 
 echo $strResponse;
-
+exit;
 ?>

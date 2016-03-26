@@ -1,23 +1,19 @@
 <?php
-//Открытие сессии
 require_once('startsession.php');
-
-//Загрузка переменных для коннекта с базой данных
 require_once('connectvars.php');
 
 $sn_user_id = isset($_SESSION['sn_user_id']) ? $_SESSION['sn_user_id'] : "";
 
 $needForgot = "0";
+$request_body = file_get_contents('php://input');
+$data = json_decode($request_body, true);
+$sn_login = $data['login'];
+$password = $data['password'];
+$needForgot = $data['needForgot'];
 
 if ( $sn_user_id != "" ) {
     $query = "SELECT * FROM sn_user WHERE user_id = '$sn_user_id'";
 } else {
-    $request_body = file_get_contents('php://input');
-    $data = json_decode($request_body, true);
-    $sn_login = $data['login'];
-    $password = $data['password'];
-    $needForgot = $data['needForgot'];
-
     $query = "SELECT * FROM sn_user WHERE login = '$sn_login' and password = sha('$password')";
 }
 

@@ -8,7 +8,7 @@ define(['backbone',
     initialize: function() {
       this.render();
 
-      this.collection.on('change', function(){
+      this.listenTo(this.collection, 'change', function(){
         this.render();
       });
     },
