@@ -1,15 +1,19 @@
-define(['backbone', 'text!templates/loginTemplates/loginHeaderTemplate.html'], function(Backbone, template){
-  var View = Backbone.View.extend({
-    el: '#head',
-    template: _.template(template),
+define(['backbone',
+        'text!templates/loginTemplates/loginHeaderTemplate.html'],
+    function (Backbone,
+              template) {
+        'use strict';
+        var View = Backbone.View.extend({
+            el: '#head',
+            template: _.template(template),
 
-    initialize: function() {
-      this.render();
-    },
+            initialize: function () {
+                this.render();
+            },
 
-    render: function(){
-      this.$el.html(this.template(  ));
-    }
-  });
-  return View;
-});
+            render: function () {
+                this.$el.html(this.template());
+            }
+        });
+        return View;
+    });

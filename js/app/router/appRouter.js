@@ -4,11 +4,11 @@ define(['backbone',
         'app/login/loginView',
         'app/todo/generalView',
         'app/autoLoginModel/autoLoginModel'],
-    function(Backbone,
+    function (Backbone,
              LoginView,
              GeneralView,
-             AutoLoginModel){
-
+             AutoLoginModel) {
+        'use strict';
         var Router = Backbone.Router.extend({
             routes: {
                 "": "login",
@@ -16,7 +16,7 @@ define(['backbone',
                 "todo": "todo"
             },
 
-            initialize: function(options) {
+            initialize: function (options) {
                 app.router = this;
                 this.autoLoginModel = new AutoLoginModel();
                 this.listenTo(this.autoLoginModel, 'change:acces', function() {
@@ -25,12 +25,11 @@ define(['backbone',
                 this.autoLoginModel.fetch();
             },
 
-            login: function() {
+            login: function () {
                 new LoginView({router: this});
             },
             todo: function () {
                 new GeneralView({router: this});
-
             }
         });
         return Router;
