@@ -16,7 +16,7 @@ define(['backbone',
                 "todo": "todo"
             },
 
-            initialize: function (options) {
+            initialize: function () {
                 app.router = this;
                 this.autoLoginModel = new AutoLoginModel();
                 this.listenTo(this.autoLoginModel, 'change:acces', function() {
