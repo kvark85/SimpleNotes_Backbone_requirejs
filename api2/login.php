@@ -7,6 +7,8 @@ require_once('connectvars.php');
 
 $sn_user_id = isset($_SESSION['sn_user_id']) ? $_SESSION['sn_user_id'] : "";
 
+$needForgot = "0";
+
 if ( $sn_user_id != "" ) {
     $query = "SELECT * FROM sn_user WHERE user_id = '$sn_user_id'";
 } else {
@@ -14,6 +16,7 @@ if ( $sn_user_id != "" ) {
     $data = json_decode($request_body, true);
     $sn_login = $data['login'];
     $password = $data['password'];
+    $needForgot = $data['needForgot'];
 
     $query = "SELECT * FROM sn_user WHERE login = '$sn_login' and password = sha('$password')";
 }
@@ -23,8 +26,11 @@ $result = mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"');
 mysqli_close($dbc);
 
 if( mysqli_num_rows($result) == 1 ) {
-    $_SESSION['sn_user_id'] = mysqli_fetch_array($result)['user_id'];
-    setcookie('sn_user_id', $_SESSION['sn_user_id'], time() + (60*60*24));
+    $user_id = mysqli_fetch_array($result)['user_id'];
+    $_SESSION['sn_user_id'] = $user_id;
+    if($needForgot == "1") {
+        setcookie('sn_user_id', $user_id, time() + (60*60*24));
+    }
     echo '{"acces": "Ok"}';
 } else {
     header('HTTP/1.0 401 Unauthorized');
