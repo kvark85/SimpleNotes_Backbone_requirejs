@@ -28,9 +28,6 @@ define(['backbone',
                     }
                 });
                 this.todoListCollection.fetch({
-                    success: function () {
-                        this.content.render();
-                    }.bind(this),
                     error: function () {
                         app.router.navigate("", true);
                     }

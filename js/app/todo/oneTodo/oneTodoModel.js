@@ -2,7 +2,8 @@ define(['backbone'], function (Backbone) {
     'use strict';
     var Model = Backbone.Model.extend({
         defaults: {
-            title: "",
+            todo_id: '',
+            todo: '',
             completed: "0"
         }
     });

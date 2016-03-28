@@ -18,6 +18,7 @@ define(['backbone',
             initialize: function () {
                 this.render();  //рендер контентной части
                 this.$newTodo = this.$('#newTodo'); //todo использовать это кешированное значение
+                this.listenTo(this.collection, 'add', this.addOne);
             },
 
             render: function () {
@@ -40,9 +41,14 @@ define(['backbone',
             addNewTodoToList: function () {
                 var strTodo = this.$('#newTodo').val().trim();
                 if (strTodo) {
-                    this.collection.create({title: strTodo});
+                    this.collection.create({todo: strTodo});
                     this.$('#newTodo').val('');
                 }
+            },
+
+            addOne: function (todo) {
+                var oneTodoView = new OneTodoView({model: todo});
+                this.$('#todoList').append(oneTodoView.render().el);
             }
         });
         return View;
