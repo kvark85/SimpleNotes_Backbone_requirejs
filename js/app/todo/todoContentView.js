@@ -17,7 +17,7 @@ define(['backbone',
 
             initialize: function () {
                 this.render();  //рендер контентной части
-                this.$newTodo = this.$el.find('#newTodo');
+                this.$newTodo = this.$('#newTodo'); //todo использовать это кешированное значение
             },
 
             render: function () {
@@ -30,7 +30,7 @@ define(['backbone',
             },
 
             createNewTodoOnEnter: function (e) {
-                if (e.keyCode !== 13 || !this.$newTodo.val()) {
+                if (e.keyCode !== 13 || !this.$('#newTodo').val()) {
                     return;
                 }
 
@@ -38,8 +38,11 @@ define(['backbone',
             },
 
             addNewTodoToList: function () {
-                var stringTodo = this.$newTodo.val().trim();
-                this.collection.create({title: stringTodo});
+                var strTodo = this.$('#newTodo').val().trim();
+                if (strTodo) {
+                    this.collection.create({title: strTodo});
+                    this.$('#newTodo').val('');
+                }
             }
         });
         return View;

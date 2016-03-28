@@ -16,9 +16,9 @@ define(['backbone',
 
             initialize: function () {
                 this.render();  //рендер контентной части
-                this.$login = this.$el.find('#login');
-                this.$password = this.$el.find('#password');
-                this.$needForgot = this.$el.find('#needForgot');
+                this.$login = this.$('#login');
+                this.$password = this.$('#password');
+                this.$needForgot = this.$('#needForgot');
                 this.simpAlertModel = new SimpAlertModel(); // создаем модель для информационных сообщений
                 this.simpAlertView = new SimpAlertView({model: this.simpAlertModel}); //создаем новое view для отображения информационного сообщения
 
