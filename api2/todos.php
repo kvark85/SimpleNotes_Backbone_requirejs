@@ -8,41 +8,64 @@ if ( $sn_user_id == "" ) {
     header('HTTP/1.0 401 Unauthorized');
 }
 
-if ($_SERVER['REQUEST_METHOD'] == "POST")
-    {
-        $request_body = file_get_contents('php://input');
-        $data = json_decode($request_body, true);
-        $todo = $data['todo'];
+$requestUri = $_SERVER['REQUEST_URI'];
 
-        $query = "INSERT INTO sn_todo(user_id, title) VALUES ('$sn_user_id', '$todo')";
-        $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Error: no connect without NySQL-server');
-        if (mysqli_query ($dbc, $query) or die ('Error on step "mysqli_query"')) {
-            $last_id = mysqli_insert_id($dbc);
-        }
-        mysqli_close($dbc);
+// ----- 1 Изменить состояние одной заметки Start ----------------------------------------------------------------------
+if ($_SERVER['REQUEST_METHOD'] == "PUT" && preg_match( "/\d+$/", $requestUri, $matches ))
+{
+    $request_body = file_get_contents('php://input');
+    $data = json_decode($request_body, true);
+    $todo = $data['todo'];
+    $completed = $data['completed'];
+    $idFromUrl = $matches[0];
 
-        echo '{"todo_id": "' . $last_id . '", "todo": "' . $row['title'] . '","completed": "' . $row['completed'] . '"}';
-        exit;
+    $query = "UPDATE sn_todo SET completed = $completed WHERE todo_id = $idFromUrl";
+    $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Error: no connect without NySQL-server');
+    $result = mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"');
+    mysqli_close($dbc);
+
+    echo '{"id": "' . $idFromUrl . '", "todo": "' . $todo . '","completed": "' . $completed . '"}';
+    exit;
+// ----- 2 Удалить заметку Start ---------------------------------------------------------------------------------------
+} else if ($_SERVER['REQUEST_METHOD'] == "DELETE" && false)
+{
+    exit;
+// ----- 3 Сохранить одну заметку Start --------------------------------------------------------------------------------
+} else if ($_SERVER['REQUEST_METHOD'] == "POST")
+{
+    $request_body = file_get_contents('php://input');
+    $data = json_decode($request_body, true);
+    $todo = $data['todo'];
+
+    $query = "INSERT INTO sn_todo(user_id, title) VALUES ('$sn_user_id', '$todo')";
+    $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Error: no connect without NySQL-server');
+    if (mysqli_query ($dbc, $query) or die ('Error on step "mysqli_query"')) {
+        $last_id = mysqli_insert_id($dbc);
     }
-else if ($_SERVER['REQUEST_METHOD'] == "GET")
-    {
-        $query = "SELECT * FROM sn_user LEFT OUTER JOIN sn_todo using(user_id) WHERE user_id = '$sn_user_id' ORDER BY todo_id ASC";
-        $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Error: no connect without NySQL-server');
-        $result = mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"');
-        mysqli_close($dbc);
+    mysqli_close($dbc);
 
-        $strResponse = "[";
-        while ($row = mysqli_fetch_array($result)) {
-            if (isset($row['todo_id'])) {
-                $strResponse = $strResponse . '{"todo_id": "' . $row['todo_id'] . '", "todo": "' . $row['title'] . '","completed": "' . $row['completed'] . '"},';
-            }
-        }
-        if (substr($strResponse, -1) == ',') { //если в конце запроса есть ","
-            $strResponse = substr($strResponse, 0, -1); //удаляем ее
-        }
-        $strResponse = $strResponse . ']';
+    echo '{"id": "' . $last_id . '", "todo": "' . $todo . '","completed": "0"}';
+    exit;
+// ----- 4 Получить коллекцию заметок Start ----------------------------------------------------------------------------
+} else if ($_SERVER['REQUEST_METHOD'] == "GET")
+{
+    $query = "SELECT * FROM sn_user LEFT OUTER JOIN sn_todo using(user_id) WHERE user_id = '$sn_user_id' ORDER BY todo_id ASC";
+    $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Error: no connect without NySQL-server');
+    $result = mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"');
+    mysqli_close($dbc);
 
-        echo $strResponse;
-        exit;
+    $strResponse = "[";
+    while ($row = mysqli_fetch_array($result)) {
+        if (isset($row['todo_id'])) {
+            $strResponse = $strResponse . '{"id": "' . $row['todo_id'] . '", "todo": "' . $row['title'] . '","completed": "' . $row['completed'] . '"},';
+        }
     }
+    if (substr($strResponse, -1) == ',') { //если в конце запроса есть ","
+        $strResponse = substr($strResponse, 0, -1); //удаляем ее
+    }
+    $strResponse = $strResponse . ']';
+
+    echo $strResponse;
+    exit;
+}
 ?>

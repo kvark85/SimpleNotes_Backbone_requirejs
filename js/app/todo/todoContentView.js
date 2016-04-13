@@ -12,7 +12,7 @@ define(['backbone',
 
             events: {
                 'keypress #newTodo': 'createNewTodoOnEnter',
-                'click #butAddTodo': 'addNewTodoToList'
+                'click #butAddTodo': 'createInTodoCollection'
             },
 
             initialize: function () {
@@ -35,18 +35,24 @@ define(['backbone',
                     return;
                 }
 
-                this.addNewTodoToList();
+                this.createInTodoCollection();
             },
 
-            addNewTodoToList: function () {
+            createInTodoCollection: function () {
                 var strTodo = this.$('#newTodo').val().trim();
                 if (strTodo) {
-                    this.collection.create({todo: strTodo});
-                    this.$('#newTodo').val('');
+                    debugger;
+                    this.collection.create({todo: strTodo}, {'wait': true});
+                    this.clearInput();
                 }
             },
 
+            clearInput: function () {
+                this.$('#newTodo').val('');
+            },
+
             addOne: function (todo) {
+                debugger;
                 var oneTodoView = new OneTodoView({model: todo});
                 this.$('#todoList').append(oneTodoView.render().el);
             }
