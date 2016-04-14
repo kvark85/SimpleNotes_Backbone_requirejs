@@ -27,8 +27,16 @@ if ($_SERVER['REQUEST_METHOD'] == "PUT" && preg_match( "/\d+$/", $requestUri, $m
     echo '{"id": "' . $idFromUrl . '", "todo": "' . $todo . '","completed": "' . $completed . '"}';
     exit;
 // ----- 2 Удалить заметку Start ---------------------------------------------------------------------------------------
-} else if ($_SERVER['REQUEST_METHOD'] == "DELETE" && false)
+} else if ($_SERVER['REQUEST_METHOD'] == "DELETE" && preg_match( "/\d+$/", $requestUri, $matches ))
 {
+    $idFromUrl = $matches[0];
+
+    $query = "DELETE FROM sn_todo  WHERE todo_id = $idFromUrl";
+    $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Error: no connect without NySQL-server');
+    $result = mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"');
+    mysqli_close($dbc);
+
+    echo '{"id": "", "todo": "","completed": ""}';
     exit;
 // ----- 3 Сохранить одну заметку Start --------------------------------------------------------------------------------
 } else if ($_SERVER['REQUEST_METHOD'] == "POST")

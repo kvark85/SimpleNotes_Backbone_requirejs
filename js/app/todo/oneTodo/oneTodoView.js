@@ -9,11 +9,13 @@ define(['backbone',
             template: _.template(template),
 
             events: {
-                'change .js-status-checkbox': 'toggle'
+                'change .js-status-checkbox': 'toggle',
+                'click .js-delete-button': 'clear'
             },
 
             initialize: function () {
                 this.listenTo(this.model, 'change', this.render);
+                this.listenTo(this.model, 'destroy', this.remove);
             },
 
             render: function () {
@@ -28,6 +30,10 @@ define(['backbone',
 
             toggle: function () {
                 this.model.toggle();
+            },
+
+            clear: function () {
+                this.model.destroy({wait: true});
             }
         });
         return View;
