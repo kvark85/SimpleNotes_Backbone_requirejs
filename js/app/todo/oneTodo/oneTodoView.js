@@ -9,7 +9,7 @@ define(['backbone',
             template: _.template(template),
 
             events: {
-                'click .js-toggle-button': 'toggle'
+                'change .js-status-checkbox': 'toggle'
             },
 
             initialize: function () {
@@ -17,7 +17,6 @@ define(['backbone',
             },
 
             render: function () {
-                debugger;
                 if (this.model.get('completed') === "1") {
                     this.$el.addClass('list-group-item-success');
                 } else {

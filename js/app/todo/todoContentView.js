@@ -41,7 +41,6 @@ define(['backbone',
             createInTodoCollection: function () {
                 var strTodo = this.$('#newTodo').val().trim();
                 if (strTodo) {
-                    debugger;
                     this.collection.create({todo: strTodo}, {'wait': true});
                     this.clearInput();
                 }
@@ -52,7 +51,6 @@ define(['backbone',
             },
 
             addOne: function (todo) {
-                debugger;
                 var oneTodoView = new OneTodoView({model: todo});
                 this.$('#todoList').append(oneTodoView.render().el);
             }
