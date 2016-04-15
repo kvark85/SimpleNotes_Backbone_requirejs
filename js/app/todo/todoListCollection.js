@@ -5,7 +5,7 @@ define(['backbone',
         'use strict';
         var Model = Backbone.Collection.extend({
             model: OneTodoModel,
-            url: '/api2/todos.php'
+            url: '/api/todos.php'
         });
         return Model;
     });

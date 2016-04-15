@@ -16,15 +16,16 @@ if ($_SERVER['REQUEST_METHOD'] == "PUT" && preg_match( "/\d+$/", $requestUri, $m
     $request_body = file_get_contents('php://input');
     $data = json_decode($request_body, true);
     $todo = $data['todo'];
-    $completed = $data['completed'];
+    $completed = ($data['completed'] == true) ? 'true' : 'false';
+    $intCompleted = ($completed == 'true') ? '1' : '0';
     $idFromUrl = $matches[0];
 
-    $query = "UPDATE sn_todo SET completed = $completed WHERE todo_id = $idFromUrl";
+    $query = "UPDATE sn_todo SET title = '$todo',completed = '$intCompleted' WHERE todo_id = $idFromUrl";
     $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Error: no connect without NySQL-server');
     $result = mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"');
     mysqli_close($dbc);
 
-    echo '{"id": "' . $idFromUrl . '", "todo": "' . $todo . '","completed": "' . $completed . '"}';
+    echo '{"id": "' . $idFromUrl . '", "todo": "' . $todo . '","completed": ' . $completed . '}';
     exit;
 // ----- 2 Удалить заметку Start ---------------------------------------------------------------------------------------
 } else if ($_SERVER['REQUEST_METHOD'] == "DELETE" && preg_match( "/\d+$/", $requestUri, $matches ))
@@ -52,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] == "PUT" && preg_match( "/\d+$/", $requestUri, $m
     }
     mysqli_close($dbc);
 
-    echo '{"id": "' . $last_id . '", "todo": "' . $todo . '","completed": "0"}';
+    echo '{"id": "' . $last_id . '", "todo": "' . $todo . '","completed": false}';
     exit;
 // ----- 4 Получить коллекцию заметок Start ----------------------------------------------------------------------------
 } else if ($_SERVER['REQUEST_METHOD'] == "GET")
@@ -65,7 +66,8 @@ if ($_SERVER['REQUEST_METHOD'] == "PUT" && preg_match( "/\d+$/", $requestUri, $m
     $strResponse = "[";
     while ($row = mysqli_fetch_array($result)) {
         if (isset($row['todo_id'])) {
-            $strResponse = $strResponse . '{"id": "' . $row['todo_id'] . '", "todo": "' . $row['title'] . '","completed": "' . $row['completed'] . '"},';
+            $boolCompleted = ($row['completed'] == 1) ? "true" : "false";
+            $strResponse = $strResponse . '{"id": "' . $row['todo_id'] . '", "todo": "' . $row['title'] . '","completed": ' . $boolCompleted . '},';
         }
     }
     if (substr($strResponse, -1) == ',') { //если в конце запроса есть ","

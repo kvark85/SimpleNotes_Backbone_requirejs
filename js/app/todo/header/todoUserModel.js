@@ -5,7 +5,7 @@ define(['backbone'], function(Backbone){
             name: "",
             needLogout: false
         },
-        url: '/api2/user.php'
+        url: '/api/user.php'
     });
     return Model;
 });

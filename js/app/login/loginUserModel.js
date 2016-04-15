@@ -6,7 +6,7 @@ define(['backbone'], function (Backbone) {
             password: '',
             needForgot: '0'
         },
-        url: '/api2/login.php',
+        url: '/api/login.php',
         validate: function (attrs) {
             if (attrs.login === "" && attrs.password === "") {
                 return "Вы забыли ввести и логин, и пароль.";
