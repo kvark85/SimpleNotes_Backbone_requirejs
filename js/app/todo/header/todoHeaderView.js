@@ -1,5 +1,5 @@
 define(['backbone',
-    'text!templates/todoTemplates/todoHeaderTemplate.html'],
+        'text!templates/todo/todoHeaderTemplate.html'],
     function (Backbone,
              template) {
         'use strict';

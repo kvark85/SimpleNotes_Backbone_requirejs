@@ -1,5 +1,5 @@
 define(['backbone',
-        'text!templates/login/loginHeaderTemplate.html'],
+        'text!templates/registration/registrationHeaderTemplate.html'],
     function (Backbone,
               template) {
         'use strict';

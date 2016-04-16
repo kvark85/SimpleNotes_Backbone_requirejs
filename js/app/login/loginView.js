@@ -1,5 +1,5 @@
 define(['backbone',
-    'text!templates/loginTemplates/loginTemplate.html',
+        'text!templates/login/loginTemplate.html',
     'app/login/loginHeaderView',
     'app/login/loginContentView',
     'app/login/loginUserModel'],
@@ -20,7 +20,7 @@ define(['backbone',
 
             render: function () {
                 this.$el.html(this.template());
-                this.header = new LoginHeaderView({model: this.user});
+                this.header = new LoginHeaderView();
                 this.content = new LoginContentView({model: this.user});
                 return this;
             }

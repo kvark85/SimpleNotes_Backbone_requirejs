@@ -1,5 +1,5 @@
 define(['backbone',
-        'text!templates/loginTemplates/loginContentTemplate.html',
+        'text!templates/login/loginContentTemplate.html',
         'app/simpAlert/simpAlertView',
         'app/simpAlert/simpAlertModel'],
     function (Backbone,
