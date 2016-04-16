@@ -25,7 +25,7 @@ if( mysqli_num_rows($result) == 1 ) {
     $user_id = mysqli_fetch_array($result)['user_id'];
     $_SESSION['sn_user_id'] = $user_id;
     if($needForgot == "1") {
-        setcookie('sn_user_id', $user_id, time() + (60*60*24));
+        setcookie('sn_user_id', $user_id, time() + (60*60*24*7));
     }
     echo '{"acces": "Ok"}';
 } else {

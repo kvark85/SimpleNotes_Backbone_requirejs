@@ -6771,6 +6771,9 @@ button.close {
 .todo-checkbox:checked + label .not-ready {
   display: none;
 }
+.bottom-border {
+  border-bottom: 1px solid #e7e7e7;
+}
 .gm-full-height {
   height: 100%;
 }
