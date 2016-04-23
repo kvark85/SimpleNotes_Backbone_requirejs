@@ -27,7 +27,8 @@ $result = mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"');
 mysqli_close($dbc);
 
 $rowFromDb = mysqli_fetch_array($result);
-$strResponse = '{"name": "' . $rowFromDb['login'] . '"}';
+$nameForOutput = ($rowFromDb['name'] != "") ? $rowFromDb['name'] : $rowFromDb['login'];
+$strResponse = '{"name": "' . $nameForOutput . '"}';
 
 echo $strResponse;
 exit;

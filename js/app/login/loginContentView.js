@@ -23,7 +23,7 @@ define(['backbone',
                 this.simpAlertView = new SimpAlertView({model: this.simpAlertModel}); //создаем новое view для отображения информационного сообщения
 
                 this.listenTo(this.model, 'invalid', function (model, error) { //привязываем вывод информационного сообщения на валидацию модели
-                    this.simpAlertModel.set('textAlert', error); //помещаем текст ошибки в модель
+                    this.simpAlertModel.set({type: 'warning', textAlert: error}); //помещаем текст ошибки в модель
                     this.simpAlertView.render();
                 }, this);
 
@@ -40,7 +40,10 @@ define(['backbone',
                 this.model.set({login: login, password: password, needForgot: needForgot});
                 this.model.save("", "", {
                     error: function () {
-                        this.simpAlertModel.set('textAlert', 'Вы ошиблись при вводе логина или пароля.');
+                        this.simpAlertModel.set({
+                            type: 'warning',
+                            textAlert: 'Вы ошиблись при вводе логина или пароля.'
+                        });
                         this.simpAlertView.render();
                     }.bind(this)
                 });
