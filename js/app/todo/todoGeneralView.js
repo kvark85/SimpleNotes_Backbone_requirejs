@@ -24,12 +24,12 @@ define(['backbone',
                         this.header.render();
                     }.bind(this),
                     error: function () {
-                        app.router.navigate("", true);
+                        location.href = '';
                     }
                 });
                 this.todoListCollection.fetch({
                     error: function () {
-                        app.router.navigate("", true);
+                        location.href = '';
                     }
                 });
             },

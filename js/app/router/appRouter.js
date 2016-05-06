@@ -1,5 +1,3 @@
-var app = app || {};
-
 define(['backbone',
         'app/login/loginView',
         'app/todo/todoGeneralView',
@@ -20,10 +18,9 @@ define(['backbone',
             },
 
             initialize: function () {
-                app.router = this;
                 this.autoLoginModel = new AutoLoginModel();
-                this.listenTo(this.autoLoginModel, 'change:acces', function() {
-                    app.router.navigate("#!/todo", true);
+                this.listenTo(this.autoLoginModel, 'change:acces', function () {
+                    location.href = '#!/todo';
                 });
                 this.autoLoginModel.fetch();
             },

@@ -23,7 +23,7 @@ define(['backbone',
                 this.model.set('needLogout', true);
                 this.model.save("", "", {
                     success: function () {
-                        app.router.navigate("", true);
+                        location.href = '';
                     }.bind(this)
                 });
             }
