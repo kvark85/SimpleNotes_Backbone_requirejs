@@ -13,8 +13,8 @@ define(['backbone',
             el: '#mainContetn',
             template: _.template(template),
 
-            initialize: function () {
-                this.regModel = new RegistrationUserModel();
+            initialize: function (data) {
+                this.regModel = new RegistrationUserModel({id: data.postData.id, regNum: data.postData.regNum});
                 this.render();
             },
 

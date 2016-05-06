@@ -14,30 +14,30 @@ define(['backbone',
         var Router = Backbone.Router.extend({
             routes: {
                 "": "login",
-                "#": "todo",
-                "todo": "todo",
-                "registration": "registration"
+                "!/todo": "todo",
+                "!/registration": "registration",
+                "!/registration/:id/:reqNum": "registration"
             },
 
             initialize: function () {
                 app.router = this;
                 this.autoLoginModel = new AutoLoginModel();
                 this.listenTo(this.autoLoginModel, 'change:acces', function() {
-                    app.router.navigate("todo", true);
+                    app.router.navigate("#!/todo", true);
                 });
                 this.autoLoginModel.fetch();
             },
 
             login: function () {
-                new LoginView({router: this});
+                new LoginView();
             },
 
             todo: function () {
-                new TodoGeneralView({router: this});
+                new TodoGeneralView();
             },
 
-            registration: function () {
-                new RegistrationGeneralView({router: this});
+            registration: function (id, regNum) {
+                new RegistrationGeneralView({postData: {id: id, regNum: regNum}});
             }
         });
         return Router;

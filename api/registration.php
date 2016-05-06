@@ -6,68 +6,75 @@ require_once('connectvars.php');
 $needForgot = "0";
 $request_body = file_get_contents('php://input');
 $data = json_decode($request_body, true);
-$login = $data['login'];
-$password = $data['password'];
-$name = $data['name'];
-$email = $data['email'];
-$password = $data['password'];
-$repetPassword = $data['repetPassword'];
+$id = isset($data['id']) ? $data['id'] : "";
+$login = isset($data['login']) ? $data['login'] : "";
+$name = isset($data['name']) ? $data['name'] : "";
+$step = isset($data['step']) ? $data['step'] : "";
+$email = isset($data['email']) ? $data['email'] : "";
+$password = isset($data['password']) ? $data['password'] : "";
+$repetPassword = isset($data['repetPassword']) ? $data['repetPassword'] : "";
+$regNum = isset($data['regNum']) ? $data['regNum'] : "";
 
-$query = "SELECT * FROM sn_user WHERE login = '$login'";
-$dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Error: no connect without NySQL-server');
-$result = mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"');
+if ($id == "" && $regNum == "") {
+    $query = "SELECT * FROM sn_user WHERE login = '$login'";
+    $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Error: no connect without NySQL-server');
+    $result = mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"');
+    if (mysqli_num_rows($result) != 0) {
+        mysqli_close($dbc);
+        echo '{"message": {"type": "warning", "textAlert": "Пользователь с таким логином уже зарегистрирован."}}';
+        exit;
+    };
 
-if (mysqli_num_rows($result) != 0) {
+    $query = "SELECT * FROM sn_user WHERE email = '$email'";
+    $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Error: no connect without NySQL-server');
+    $result = mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"');
+    if (mysqli_num_rows($result) != 0) {
+        mysqli_close($dbc);
+        echo '{"message": {"type": "warning", "textAlert": "Пользователь с такой электронной почтой уже зарегистрирован."}}';
+        exit;
+    };
+
+    $regNum = (string)mt_rand();
+    if ($name == "") {
+        $query = "INSERT INTO sn_user(login, email, regNum) VALUES ('$login', '$email', '$regNum')"; //пользователь не ввел имя
+    } else {
+        $query = "INSERT INTO sn_user(login, name, email, regNum) VALUES ('$login', '$name', '$email', '$regNum')"; //пользователь ввел и имя
+    }
+    $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Error: no connect without NySQL-server');
+    if (mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"')) {
+        $last_id = mysqli_insert_id($dbc);
+    }
     mysqli_close($dbc);
-    echo '{"message": {"type": "warning", "textAlert": "Пользователь с таким логином уже зарегистрирован."}}';
+
+    echo '{"step": 2}';
+
+    mail($email,
+        "Подтверждения электронного адресса",
+        "Если вы действительно хотите зарегистрироваться на сервисе SimpleNotes,\n" .
+        "перейдите пожалуйста по ссылке http://" . ADDRESS . "/#!/registration/$last_id/$regNum");
     exit;
-};
-
-$query = "SELECT * FROM sn_user WHERE email = '$email'";
-$dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Error: no connect without NySQL-server');
-$result = mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"');
-
-if (mysqli_num_rows($result) != 0) {
-    mysqli_close($dbc);
-    echo '{"message": {"type": "warning", "textAlert": "Пользователь с такой электронной почтой уже зарегистрирован."}}';
-    exit;
-};
-
-$regNum = (string)mt_rand();
-
-//sha('$password'),
-
-if ($name == "") {
-    //пользователь не ввел имя
-    $query = "INSERT INTO sn_user(login, email, regNum) VALUES ('$login', '$email', '$regNum')";
-} else {
-    //пользователь ввел и имя
-    $query = "INSERT INTO sn_user(login, name, email, regNum) VALUES ('$login', '$name', '$email', '$regNum')";
 }
 
-$dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Error: no connect without NySQL-server');
-$result = mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"');
-if (mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"')) {
-    $last_id = mysqli_insert_id($dbc);
+if ($id != "" && $regNum != "") {
+    $query = "SELECT * FROM sn_user WHERE user_id = $id AND regNum= $regNum";
+    $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Error: no connect without NySQL-server');
+    $result = mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"');
+    mysqli_close($dbc);
+    if (mysqli_num_rows($result) != 0) {
+        $row = mysqli_fetch_array($result);
+        echo '{"id": ' . $row['user_id'] . ', "login": "' . $row['login'] . '", "name": "' . $row['name'] . '", "step": 4, "email": "' . $row['email'] . '" , "password": "", "repetPassword": "", "regId": "", "regNum": ""}';
+    } else {
+        echo '{"login": "", "name": "", "step": 3, "email": "", "password": "", "repetPassword": "", "regId": "", "regNum": "", "message": {"type": "warning", "textAlert": "Ошибка при регистрации, если вы хотите пользоваться данным сервисом, перерегистрируйтесь."}}';
+    };
+    exit;
 }
-mysqli_close($dbc);
 
-echo '{"step": 2}';
-
-
-mail($email,
-    "Подтверждения электронного адресса",
-    "Если вы действительно хотите зарегистрироваться на сервисе SimpleNotes,\n" .
-    "перейдите пожалуйста по ссылке http://" . ADDRESS . "/#registration/$last_id/$regNum/");
-
-//mail("kavrk85@google.com",
-//    "Подтверждения электронного адресса",
-//    "Если вы действительно хотите зарегистрироваться на сервисе SimpleNotes\n".
-//    "(тоесть, для завершения процеса регистрации),\n".
-//    "перейдите пожалуйста по ссылке http://" . ADDRESS . "/#registration/$regNum",
-//    "From: " . EMAILFROM . " \r\n".
-//    "X-Mailer: PHP/" . phpversion());
-
-
-exit;
+if ($step == 4) {
+    $query = "UPDATE sn_user SET regNum = '', password = sha('$password') WHERE user_id  = $id";
+    $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Error: no connect without NySQL-server');
+    mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"');
+    mysqli_close($dbc);
+    echo '{"step": 5}';
+    exit;
+}
 ?>

@@ -16,12 +16,6 @@ define(['backbone',
             },
 
             initialize: function () {
-                this.render();  //рендер контентной части
-                this.$login = this.$('#login');
-                this.$name = this.$('#name');
-                this.$email = this.$('#email');
-                this.$password = this.$('#password');
-                this.$repetPassword = this.$('#repetPassword');
                 this.simpAlertModel = new SimpAlertModel(); // создаем модель для информационных сообщений
                 this.simpAlertView = new SimpAlertView({model: this.simpAlertModel}); //создаем новое view для отображения информационного сообщения
 
@@ -31,14 +25,68 @@ define(['backbone',
                 }, this);
 
                 this.listenTo(this.model, 'userCreateSuccess', function () {
+                    var messageStr;
+                    if (this.model.get('step') === 2) {
+                        messageStr = 'Проверьте Вашу почту для завершения процеса регистрации.';
+                    }
+                    if (this.model.get('step') === 5) {
+                        messageStr = 'Регистрация прошла успешно. Залогинтесь и пользуйтесь сервисом с удовольствием.';
+                    }
                     this.render();
+
                     this.simpAlertModel.set({
                         type: 'success',
-                        textAlert: 'Проверьте Вашу почту для завершения процеса регистрации.'
+                        textAlert: messageStr
                     }); //помещаем текст ошибки в модель
                     this.simpAlertView.render();
                 }, this);
 
+
+                if (this.model.get('id') && this.model.get('regNum')) {
+                    this.simpAlertModel.set({
+                        type: 'success',
+                        textAlert: 'Регистрация почти закончена, осталось ввести какой вы хотите себе пароль.'
+                    }); //помещаем текст ошибки в модель
+                    this.simpAlertView.render();
+                }
+
+                if (this.model.get('id') && this.model.get('regNum')) {
+                    this.model.save("", "", {
+                        validate: false,
+                        success: function (a, response) {
+                            if (response.message) {
+                                this.simpAlertModel.set({
+                                    type: response.message.type,
+                                    textAlert: response.message.textAlert
+                                });
+                                this.simpAlertView.render();
+                            } else {
+                                this.render();
+
+                                this.$login = this.$('#login');
+                                this.$name = this.$('#name');
+                                this.$email = this.$('#email');
+                                this.$password = this.$('#password');
+                                this.$repetPassword = this.$('#repetPassword');
+
+                            }
+                        }.bind(this),
+                        error: function () {
+                            this.simpAlertModel.set({
+                                type: 'warning',
+                                textAlert: 'Какая то странная ошибочка произошла... Я даже не знаю как это обьяснить...'
+                            });
+                            this.simpAlertView.render();
+                        }.bind(this)
+                    });
+                }
+
+                this.render();  //рендер контентной части
+                this.$login = this.$('#login');
+                this.$name = this.$('#name');
+                this.$email = this.$('#email');
+                this.$password = this.$('#password');
+                this.$repetPassword = this.$('#repetPassword');
             },
 
             registrationSubmit: function () {

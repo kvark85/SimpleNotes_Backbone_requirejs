@@ -28,7 +28,7 @@ define(['backbone',
                 }, this);
 
                 this.listenTo(this.model, 'change:acces', function () {
-                    app.router.navigate("todo", true);
+                    app.router.navigate("#!/todo", true);
                 });
             },
 
