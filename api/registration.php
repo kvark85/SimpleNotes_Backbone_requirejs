@@ -16,22 +16,21 @@ $repetPassword = isset($data['repetPassword']) ? $data['repetPassword'] : "";
 $regNum = isset($data['regNum']) ? $data['regNum'] : "";
 
 if ($id == "" && $regNum == "") {
-    $query = "SELECT * FROM sn_user WHERE login = '$login'";
+    $query = "SELECT * FROM sn_user WHERE login = '$login' or email = '$email'";
     $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Error: no connect without NySQL-server');
     $result = mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"');
-    if (mysqli_num_rows($result) != 0 && mysqli_fetch_array($result)['regNum'] == "") {
-        mysqli_close($dbc);
-        echo '{"message": {"type": "warning", "textAlert": "Пользователь с таким логином уже зарегистрирован."}}';
-        exit;
-    };
-
-    $query = "SELECT * FROM sn_user WHERE email = '$email'";
-    $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Error: no connect without NySQL-server');
-    $result = mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"');
-    if (mysqli_num_rows($result) != 0 && mysqli_fetch_array($result)['regNum'] == "") {
-        mysqli_close($dbc);
-        echo '{"message": {"type": "warning", "textAlert": "Пользователь с такой электронной почтой уже зарегистрирован."}}';
-        exit;
+    if (mysqli_num_rows($result) != 0) {
+        $row = mysqli_fetch_array($result);
+        if ($row['login'] == $login && $row['regNum'] == "") {
+            mysqli_close($dbc);
+            echo '{"message": {"type": "warning", "textAlert": "Пользователь с таким логином уже зарегистрирован."}}';
+            exit;
+        }
+        if ($row['email'] == $email && $row['regNum'] == "") {
+            mysqli_close($dbc);
+            echo '{"message": {"type": "warning", "textAlert": "Пользователь с такой электронной почтой уже зарегистрирован."}}';
+            exit;
+        }
     };
 
     $regNum = (string)mt_rand();
