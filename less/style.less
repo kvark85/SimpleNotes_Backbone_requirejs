@@ -15,12 +15,13 @@
 
 // ----- NOTE START -----
 .todo-ison {
-  font-size: (@font-size-base * 1.5);
+  font-size: (@font-size-base * 2);
   color: @brand-primary;
 }
 .button-img{
   border: none;
   background-color: transparent;
+  padding: 0;
 }
 .note-show {
   display: inline-block;
@@ -42,11 +43,11 @@
       display:none;
       + label {
         .ready {
-          font-size: (@font-size-base * 1.5);
+          //font-size: (@font-size-base * 1.5);
           display: none;
         }
         .not-ready {
-          font-size: (@font-size-base * 1.5);
+          //font-size: (@font-size-base * 1.5);
           display: inline-block;
         }
       }
@@ -65,4 +66,8 @@
 
 .bottom-border {
   border-bottom: 1px solid @navbar-default-border;
+}
+
+.content-wrap {
+  min-width: 320px;
 }

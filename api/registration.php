@@ -19,7 +19,7 @@ if ($id == "" && $regNum == "") {
     $query = "SELECT * FROM sn_user WHERE login = '$login'";
     $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Error: no connect without NySQL-server');
     $result = mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"');
-    if (mysqli_num_rows($result) != 0) {
+    if (mysqli_num_rows($result) != 0 && mysqli_fetch_array($result)['regNum'] == "") {
         mysqli_close($dbc);
         echo '{"message": {"type": "warning", "textAlert": "Пользователь с таким логином уже зарегистрирован."}}';
         exit;
@@ -28,7 +28,7 @@ if ($id == "" && $regNum == "") {
     $query = "SELECT * FROM sn_user WHERE email = '$email'";
     $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Error: no connect without NySQL-server');
     $result = mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"');
-    if (mysqli_num_rows($result) != 0) {
+    if (mysqli_num_rows($result) != 0 && mysqli_fetch_array($result)['regNum'] == "") {
         mysqli_close($dbc);
         echo '{"message": {"type": "warning", "textAlert": "Пользователь с такой электронной почтой уже зарегистрирован."}}';
         exit;
@@ -48,10 +48,23 @@ if ($id == "" && $regNum == "") {
 
     echo '{"step": 2}';
 
-    mail($email,
-        "Подтверждения электронного адресса",
-        "Если вы действительно хотите зарегистрироваться на сервисе SimpleNotes,\n" .
-        "перейдите пожалуйста по ссылке http://" . ADDRESS . "/#!/registration/$last_id/$regNum");
+    $subject = "Подтверждения электронного адресса на сервисе SimpleNotes";
+    $message = "
+        <html>
+            <head>
+             <title>Подтверждения электронного адресса</title>
+            </head>
+            <body>
+              Если вы действительно хотите зарегистрироваться на сервисе SimpleNotes,<br />
+              перейдите пожалуйста по ссылке
+              <a href=\"http://" . ADDRESS . "/#!/registration/$last_id/$regNum\">
+                " . ADDRESS . "/#!/registration/$last_id/$regNum
+              </a>
+            </body>
+        </html>
+    ";
+    $headers = "MIME-Version: 1.0" . "\r\n" . "Content-type: text/html; charset=utf-8-1" . "\r\n";
+    mail($email, $subject, $message, $headers);
     exit;
 }
 
