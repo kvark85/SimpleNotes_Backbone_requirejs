@@ -1,7 +1,8 @@
 define(['backbone',
         'text!templates/login/loginContentTemplate.html',
         'app/simpAlert/simpAlertView',
-        'app/simpAlert/simpAlertModel'],
+        'app/simpAlert/simpAlertModel',
+        'openapi'],
     function (Backbone,
               template,
               SimpAlertView,
@@ -21,6 +22,9 @@ define(['backbone',
                 this.$needForgot = this.$('#needForgot');
                 this.simpAlertModel = new SimpAlertModel(); // создаем модель для информационных сообщений
                 this.simpAlertView = new SimpAlertView({model: this.simpAlertModel}); //создаем новое view для отображения информационного сообщения
+
+                VK.init({apiId: 5438723});
+                VK.Widgets.Auth("vk_auth", {width: "290px", authUrl: '/api/registration.php'});
 
                 this.listenTo(this.model, 'invalid', function (model, error) { //привязываем вывод информационного сообщения на валидацию модели
                     this.simpAlertModel.set({type: 'warning', textAlert: error}); //помещаем текст ошибки в модель

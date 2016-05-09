@@ -3,6 +3,43 @@ require_once('startsession.php');
 require_once('appvars.php');
 require_once('connectvars.php');
 
+$uid = isset($_REQUEST['uid']) ? $_REQUEST['uid'] : "";
+$first_name = isset($_REQUEST['first_name']) ? $_REQUEST['first_name'] : "";
+$photo_rec = isset($_REQUEST['photo_rec']) ? $_REQUEST['photo_rec'] : "";
+$hash = isset($_REQUEST['hash']) ? $_REQUEST['hash'] : "";
+
+if ($hash == md5(APIID . $uid . SECRETKEY)) {
+    setcookie('sn_user_id', '', time() - 3600); // отчищаем куки
+    unset($_SESSION['sn_user_id']); // отчищаем id в сессии
+
+    $query = "SELECT user_id FROM sn_user WHERE vk_user_id = '$uid'";
+    $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Error: no connect without NySQL-server');
+    $result = mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"');
+
+    if (mysqli_num_rows($result)) { //пользователь авторизован, просто пересоздадим куки
+        $row = mysqli_fetch_array($result);
+
+        $query = "UPDATE sn_user SET name = '$first_name' WHERE vk_user_id =  '$uid' LIMIT 1";
+        $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Error: no connect without NySQL-server');
+        $result = mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"');
+
+        $_SESSION['sn_user_id'] = $row['user_id'];
+        setcookie('sn_user_id', $row['user_id'], time() + (60 * 60 * 24 * 1));
+    } else { //добавим запись в таблицу пользователей
+        $query = "INSERT INTO sn_user (name, photo_rec, vk_user_id) VALUES ('$first_name', '$photo_rec', '$uid')";
+        $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Error: no connect without NySQL-server');
+        if (mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"')) {
+            $last_id = mysqli_insert_id($dbc);
+        }
+        $_SESSION['sn_user_id'] = $last_id;
+        setcookie('sn_user_id', $last_id, time() + (60 * 60 * 24 * 1));
+    }
+
+    mysqli_close($dbc);
+    header("Location: /#");
+    exit;
+}
+
 $needForgot = "0";
 $request_body = file_get_contents('php://input');
 $data = json_decode($request_body, true);
