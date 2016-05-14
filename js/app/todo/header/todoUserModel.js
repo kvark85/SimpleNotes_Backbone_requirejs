@@ -4,6 +4,7 @@ define(['backbone'], function(Backbone){
         defaults: {
             login: '',
             name: '',
+            photo_rec: '',
             needLogout: false
         },
         url: '/api/user.php'

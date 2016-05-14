@@ -1,5 +1,5 @@
 define(['backbone',
-        'app/login/loginView',
+        'app/login/loginGeneralView',
         'app/todo/todoGeneralView',
         'app/registration/registrationGeneralView',
         'app/autoLoginModel/autoLoginModel'],

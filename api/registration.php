@@ -19,7 +19,7 @@ if ($hash == md5(APIID . $uid . SECRETKEY)) {
     if (mysqli_num_rows($result)) { //пользователь авторизован, просто пересоздадим куки
         $row = mysqli_fetch_array($result);
 
-        $query = "UPDATE sn_user SET name = '$first_name' WHERE vk_user_id =  '$uid' LIMIT 1";
+        $query = "UPDATE sn_user SET name = '$first_name', photo_rec = '$photo_rec' WHERE vk_user_id =  '$uid' LIMIT 1";
         $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Error: no connect without NySQL-server');
         $result = mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"');
 

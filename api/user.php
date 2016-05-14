@@ -28,7 +28,7 @@ mysqli_close($dbc);
 
 $rowFromDb = mysqli_fetch_array($result);
 $nameForOutput = ($rowFromDb['name'] != "") ? $rowFromDb['name'] : $rowFromDb['login'];
-$strResponse = '{"name": "' . $nameForOutput . '"}';
+$strResponse = '{"name": "' . $nameForOutput . '", "photo_rec": "' . $rowFromDb['photo_rec'] . '"}';
 
 echo $strResponse;
 exit;
