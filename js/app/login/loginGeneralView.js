@@ -4,10 +4,10 @@ define(['backbone',
         'app/login/loginContentView',
         'app/login/loginUserModel'],
     function (Backbone,
-        template,
-        LoginHeaderView,
-        LoginContentView,
-        LoginUserModel) {
+              template,
+              LoginHeaderView,
+              LoginContentView,
+              LoginUserModel) {
         'use strict';
         var View = Backbone.View.extend({
             el: '#mainContetn',

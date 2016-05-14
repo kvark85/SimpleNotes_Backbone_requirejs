@@ -1,13 +1,12 @@
-define(['backbone'], function(Backbone){
+define(['backbone'], function (Backbone) {
     'use strict';
     var Model = Backbone.Model.extend({
         defaults: {
-            //login: '',
             name: '',
             photo_rec: '',
             needLogout: false
         },
-        url: '/api/user.php'
+        url: '/api/settings.php'
     });
     return Model;
 });

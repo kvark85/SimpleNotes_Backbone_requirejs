@@ -1,11 +1,10 @@
 define(['backbone',
-        'text!templates/login/loginHeaderTemplate.html'],
-
+        'text!templates/settings/settingsContentTemplate.html'],
     function (Backbone,
               template) {
         'use strict';
         var View = Backbone.View.extend({
-            el: '#head',
+            el: '#content',
             template: _.template(template),
 
             initialize: function () {
