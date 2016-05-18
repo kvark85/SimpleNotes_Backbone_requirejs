@@ -35,8 +35,6 @@ define(['backbone',
                 });
 
                 this.listenTo(this.user, 'invalid', function (model, error) { //привязываем вывод информационного сообщения на валидацию модели
-
-                    alert(error);
                     this.simpAlertModel.set({type: 'warning', textAlert: error}); //помещаем текст ошибки в модель
                     this.simpAlertView.render();
                 }, this);
