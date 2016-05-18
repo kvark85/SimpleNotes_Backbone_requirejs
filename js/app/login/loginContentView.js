@@ -34,6 +34,8 @@ define(['backbone',
                 this.listenTo(this.model, 'change:acces', function () {
                     location.href = '#!/todo';
                 });
+
+                this.model.fetch();
             },
 
             loginSubmit: function () {

@@ -2,51 +2,107 @@
   <div class="row">
     <div class="col-md-8 col-md-offset-4">
       <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+        <!-- Блок изменения имени Start -->
         <div class="panel panel-default">
-          <div class="panel-heading" role="tab" id="headingOne">
+          <div class="panel-heading" role="tab" id="headingName">
             <h4 class="panel-title">
-              <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne"
-                 aria-expanded="false" aria-controls="collapseOne">
+              <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseName"
+                 aria-expanded="false" aria-controls="collapseName">
                 Изменить имя
               </a>
             </h4>
           </div>
-          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div id="collapseName" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingName">
             <div class="panel-body">
-              111
+              <div class="form-group">
+                <input class="form-control" id="name" placeholder="Новое имя" type="text" value="">
+              </div>
+              <button id="saveName" type="submit" class="btn btn-info">Изменить имя</button>
             </div>
           </div>
         </div>
+        <!-- Блок изменения имени End -->
+
+        <!-- Блок изменения E-mail Start -->
         <div class="panel panel-default">
-          <div class="panel-heading" role="tab" id="headingTwo">
+          <div class="panel-heading" role="tab" id="headingEmail">
             <h4 class="panel-title">
-              <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo"
-                 aria-expanded="false" aria-controls="collapseTwo">
+              <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseEmail"
+                 aria-expanded="false" aria-controls="collapseEmail">
                 Изменить E-mail
               </a>
             </h4>
           </div>
-          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div id="collapseEmail" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingEmail">
             <div class="panel-body">
-              222
+              <div class="form-group">
+                <input class="form-control" id="newEmail" placeholder="Новый E-mail" type="text" value="">
+              </div>
+              <div class="form-group">
+                <input class="form-control" id="confirnNewEmail" placeholder="Новый E-mail еще раз" type="text"
+                       value="">
+              </div>
+              <button id="saveEmail" type="submit" class="btn btn-info">Сохранить E-mail</button>
             </div>
           </div>
         </div>
+        <!-- Блок изменения E-mail Start -->
+
+        <!-- Блок изменения пароля Start -->
         <div class="panel panel-default">
-          <div class="panel-heading" role="tab" id="headingThree">
+          <div class="panel-heading" role="tab" id="headingPassword">
             <h4 class="panel-title">
-              <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree"
-                 aria-expanded="false" aria-controls="collapseThree">
+              <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion"
+                 href="#collapsePassword"
+                 aria-expanded="false" aria-controls="collapsePassword">
+                Изменить пароль
+              </a>
+            </h4>
+          </div>
+          <div id="collapsePassword" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingPassword">
+            <div class="panel-body">
+              <div class="form-group">
+                <input class="form-control" id="сchabgePassOld" placeholder="Старый пароль" type="text" value="">
+              </div>
+              <div class="form-group">
+                <input class="form-control" id="chabgePassNew" placeholder="Новый пароль" type="text" value="">
+              </div>
+              <div class="form-group">
+                <input class="form-control" id="confirnChabgePassNew" placeholder="Новый пароль еще раз" type="text"
+                       value="">
+              </div>
+              <button id="savePassword" type="submit" class="btn btn-info">Сохранить пароль</button>
+            </div>
+          </div>
+        </div>
+        <!-- Блок изменения пароля End -->
+
+        <!-- Блок удаления пользователя Start -->
+        <div class="panel panel-default">
+          <div class="panel-heading" role="tab" id="headingDelete">
+            <h4 class="panel-title">
+              <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseDelete"
+                 aria-expanded="false" aria-controls="collapseDelete">
                 Удалить пользователя
               </a>
             </h4>
           </div>
-          <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div id="collapseDelete" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingDelete">
             <div class="panel-body">
-              333
+              Вы действительно хотите удалить пользователя?
+              <div class="checkbox">
+                <label>
+                  <input id="confirmDelete" type="checkbox"/>Да,я действительно хочу удалить пользователя.
+                </label>
+              </div>
+              <div class="form-group">
+                <input class="form-control" id="passwordForDelete" placeholder="Введите пароль" type="text" value="">
+              </div>
+              <button id="doDelete" type="submit" class="btn btn-info">Удалить пользователя</button>
             </div>
           </div>
         </div>
+        <!-- Блок удаления пользователя End -->
       </div>
     </div>
   </div>

@@ -2,10 +2,8 @@ define(['backbone'], function(Backbone){
     'use strict';
     var Model = Backbone.Model.extend({
         defaults: {
-            //login: '',
             name: '',
-            photo_rec: '',
-            needLogout: false
+            photo_rec: ''
         },
         url: '/api/user.php'
     });

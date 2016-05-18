@@ -46,11 +46,9 @@ define(['backbone',
                     this.simpAlertModel.set({
                         type: 'success',
                         textAlert: 'Регистрация почти закончена, осталось ввести какой вы хотите себе пароль.'
-                    }); //помещаем текст ошибки в модель
+                    });
                     this.simpAlertView.render();
-                }
 
-                if (this.model.get('id') && this.model.get('regNum')) {
                     this.model.save("", "", {
                         validate: false,
                         success: function (a, response) {

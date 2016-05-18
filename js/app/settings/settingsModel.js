@@ -3,8 +3,7 @@ define(['backbone'], function (Backbone) {
     var Model = Backbone.Model.extend({
         defaults: {
             name: '',
-            photo_rec: '',
-            needLogout: false
+            photo_rec: ''
         },
         url: '/api/settings.php'
     });

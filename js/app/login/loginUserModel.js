@@ -4,7 +4,8 @@ define(['backbone'], function (Backbone) {
         defaults: {
             login: '',
             password: '',
-            needForgot: '0'
+            needForgot: '0',
+            acces: ''
         },
         url: '/api/login.php',
         validate: function (attrs) {

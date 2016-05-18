@@ -2,14 +2,12 @@ define(['backbone',
         'app/login/loginGeneralView',
         'app/todo/todoGeneralView',
         'app/registration/registrationGeneralView',
-        'app/settings/settingsGeneralView',
-        'app/autoLoginModel/autoLoginModel'],
+        'app/settings/settingsGeneralView'],
     function (Backbone,
               LoginView,
               TodoGeneralView,
               RegistrationGeneralView,
-              SettingsGeneralView,
-              AutoLoginModel) {
+              SettingsGeneralView) {
         'use strict';
         var Router = Backbone.Router.extend({
             routes: {
@@ -18,14 +16,6 @@ define(['backbone',
                 '!/registration': 'registration',
                 '!/registration/:id/:reqNum': 'registration',
                 '!/settings': 'settings'
-            },
-
-            initialize: function () {
-                this.autoLoginModel = new AutoLoginModel();
-                this.listenTo(this.autoLoginModel, 'change:acces', function () {
-                    location.href = '#!/todo';
-                });
-                this.autoLoginModel.fetch();
             },
 
             login: function () {

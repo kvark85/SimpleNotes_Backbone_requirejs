@@ -1,5 +1,5 @@
 define(['backbone',
-        'text!templates/settings/settingsTemplate.html',
+        'text!templates/settings/settingsGeneralTemplate.html',
         'app/settings/settingsHeaderView',
         'app/settings/settingsContentView',
         'app/settings/settingsModel'],
