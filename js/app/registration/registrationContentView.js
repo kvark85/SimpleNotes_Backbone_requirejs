@@ -27,7 +27,7 @@ define(['backbone',
                 this.listenTo(this.model, 'userCreateSuccess', function () {
                     var messageStr;
                     if (this.model.get('step') === 2) {
-                        messageStr = 'Проверьте Вашу почту для завершения процеса регистрации.';
+                        messageStr = 'Вам будет отправлено электронное письмо, перейдите по ссылке из письма для завершения процеса регистрации.';
                     }
                     if (this.model.get('step') === 5) {
                         messageStr = 'Регистрация прошла успешно. Залогинтесь и пользуйтесь сервисом с удовольствием.';

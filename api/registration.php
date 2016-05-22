@@ -26,7 +26,7 @@ if ($hash == md5(APIID . $uid . SECRETKEY)) {
         $_SESSION['sn_user_id'] = $row['user_id'];
         setcookie('sn_user_id', $row['user_id'], time() + (60 * 60 * 24 * 1));
     } else { //добавим запись в таблицу пользователей
-        $query = "INSERT INTO sn_user (name, photo_rec, vk_user_id) VALUES ('$first_name', '$photo_rec', '$uid')";
+        $query = "INSERT INTO sn_user (name, photo_rec, vk_user_id, registration_date) VALUES ('$first_name', '$photo_rec', '$uid', CURDATE())";
         $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Error: no connect without NySQL-server');
         if (mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"')) {
             $last_id = mysqli_insert_id($dbc);
@@ -53,22 +53,27 @@ $repetPassword = isset($data['repetPassword']) ? $data['repetPassword'] : "";
 $regNum = isset($data['regNum']) ? $data['regNum'] : "";
 
 if ($id == "" && $regNum == "") {
-    $query = "SELECT * FROM sn_user WHERE login = '$login' or email = '$email'";
+    $query = "SELECT * FROM sn_user WHERE login = '$login'";
     $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Error: no connect without NySQL-server');
     $result = mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"');
-    if (mysqli_num_rows($result) != 0) {
-        $row = mysqli_fetch_array($result);
-        if ($row['login'] == $login && $row['regNum'] == "") {
-            mysqli_close($dbc);
-            echo '{"message": {"type": "warning", "textAlert": "Пользователь с таким логином уже зарегистрирован."}}';
-            exit;
-        }
-        if ($row['email'] == $email && $row['regNum'] == "") {
-            mysqli_close($dbc);
-            echo '{"message": {"type": "warning", "textAlert": "Пользователь с такой электронной почтой уже зарегистрирован."}}';
-            exit;
-        }
-    };
+    $row = mysqli_fetch_array($result);
+    $isRegNumEmpty = isset($data['regNum']) ? false : true;
+    if ($isRegNumEmpty) {
+        mysqli_close($dbc);
+        echo '{"message": {"type": "warning", "textAlert": "Пользователь с таким логином уже зарегистрирован."}}';
+        exit;
+    }
+
+    $query = "SELECT * FROM sn_user WHERE email = '$email'";
+    $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Error: no connect without NySQL-server');
+    $result = mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"');
+    $row = mysqli_fetch_array($result);
+    $isRegNumEmpty = isset($data['regNum']) ? false : true;
+    if ($isRegNumEmpty) {
+        mysqli_close($dbc);
+        echo '{"message": {"type": "warning", "textAlert": "Пользователь с такой электронной почтой уже зарегистрирован."}}';
+        exit;
+    }
 
     $regNum = (string)mt_rand();
     if ($name == "") {
@@ -81,8 +86,6 @@ if ($id == "" && $regNum == "") {
         $last_id = mysqli_insert_id($dbc);
     }
     mysqli_close($dbc);
-
-    echo '{"step": 2}';
 
     $subject = "Подтверждения электронного адресса на сервисе SimpleNotes";
     $message = "
@@ -100,7 +103,12 @@ if ($id == "" && $regNum == "") {
         </html>
     ";
     $headers = "MIME-Version: 1.0" . "\r\n" . "Content-type: text/html; charset=utf-8-1" . "\r\n";
-    mail($email, $subject, $message, $headers);
+    $resultMail = mail($email, $subject, $message, $headers);
+    if ($resultMail == false) {
+        echo '{"step": 1, "message": {"type": "warning", "textAlert": "При отправке электронной почты что-то пошло не так."}}';
+    } else {
+        echo '{"step": 2, "resultMail": ' . $resultMail . '}';
+    }
     exit;
 }
 
