@@ -38,6 +38,18 @@ define(['backbone',
                     this.simpAlertModel.set({type: 'warning', textAlert: error}); //помещаем текст ошибки в модель
                     this.simpAlertView.render();
                 }, this);
+
+                this.listenTo(this.user, 'change', function (model, error, a, b) { //привязываем вывод информационного сообщения на валидацию модели
+                    if (model.get('message')) {
+                        this.simpAlertModel.set({
+                            type: model.get('message').type,
+                            textAlert: model.get('message').textAlert
+                        }); //помещаем текст ошибки в модель
+                        if (model.get('success')) {
+                            this.simpAlertView.render();
+                        }
+                    }
+                }, this);
             },
 
             render: function () {

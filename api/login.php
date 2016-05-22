@@ -28,6 +28,17 @@ if( mysqli_num_rows($result) == 1 ) {
         setcookie('sn_user_id', $user_id, time() + (60*60*24*7));
     }
     echo '{"acces": "Ok"}';
+    //прибавляем к счетчику входов единицу и обновляем дату последнего входа
+    $query = "SELECT counter_visit FROM sn_user WHERE user_id = $user_id";
+    $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Error: no connect without MySQL-server');
+    $result = mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"');
+    $rowFromDb = mysqli_fetch_array($result);
+    $currentCounterVisit = $rowFromDb['counter_visit'] + 1;
+
+    $query = "UPDATE sn_user SET last_visit_date = CURDATE(), counter_visit = $currentCounterVisit WHERE user_id = '$user_id'";
+    $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Error: no connect without MySQL-server');
+    $result = mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"');
+    mysqli_close($dbc);
 } else {
     header('HTTP/1.0 401 Unauthorized');
 }

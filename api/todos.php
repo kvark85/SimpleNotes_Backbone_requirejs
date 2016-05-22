@@ -6,6 +6,7 @@ $sn_user_id = isset($_SESSION['sn_user_id']) ? $_SESSION['sn_user_id'] : "";
 
 if ( $sn_user_id == "" ) {
     header('HTTP/1.0 401 Unauthorized');
+    exit;
 }
 
 $requestUri = $_SERVER['REQUEST_URI'];

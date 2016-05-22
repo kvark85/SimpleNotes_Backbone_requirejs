@@ -20,6 +20,9 @@ define(['backbone'], function (Backbone) {
                 if (attrs.email === '') {
                     return "Вы забыли ввести электронную почту.";
                 }
+                if (!/@/.test(attrs.email)) {
+                    return "Вы ошиблись при вводе адркса электронной почты.";
+                }
             } else if (attrs.step === 4) {
                 if (attrs.password === '') {
                     return "Вы забыли ввести пароль.";

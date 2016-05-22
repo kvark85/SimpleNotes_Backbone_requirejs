@@ -16,7 +16,8 @@ mysqli_close($dbc);
 
 $rowFromDb = mysqli_fetch_array($result);
 $nameForOutput = ($rowFromDb['name'] != "") ? $rowFromDb['name'] : $rowFromDb['login'];
-$strResponse = '{"name": "' . $nameForOutput . '", "photo_rec": "' . $rowFromDb['photo_rec'] . '"}';
+$fromSocialNet = (isset($rowFromDb['vk_user_id'])) ? "true" : "false";
+$strResponse = '{"name": "' . $nameForOutput . '", "photo_rec": "' . $rowFromDb['photo_rec'] . '", "fromSocialNet": ' . $fromSocialNet . '}';
 
 echo $strResponse;
 exit;

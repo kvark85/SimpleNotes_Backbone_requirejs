@@ -62,7 +62,7 @@ define(['backbone',
             },
 
             clear: function () {
-                this.model.destroy({wait: true});
+                this.model.destroy({'wait': true});
             }
         });
         return View;

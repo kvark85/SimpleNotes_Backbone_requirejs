@@ -3,7 +3,8 @@ define(['backbone'], function(Backbone){
     var Model = Backbone.Model.extend({
         defaults: {
             name: '',
-            photo_rec: ''
+            photo_rec: '',
+            fromSocialNet: false
         },
         url: '/api/user.php'
     });

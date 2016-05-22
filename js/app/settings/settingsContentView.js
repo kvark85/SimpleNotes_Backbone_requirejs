@@ -11,44 +11,49 @@ define(['backbone',
                 'click #saveName': 'changeName',
                 'click #saveEmail': 'changeEmail',
                 'click #savePassword': 'changePassword',
-                'click #doDelete': 'deleteUser'
+                'click #doDelete': 'deleteUser',
+                'keypress #newName': 'keypressOnNewName'
             },
 
             initialize: function () {
                 this.render();
+                this.listenTo(this.model, 'change:fromSocialNet', this.render);
+            },
 
+            bindFieldToView: function () {
                 this.$newName = this.$('#newName');
                 this.$newEmail = this.$('#newEmail');
-                this.$chabgePassOld = this.$('#chabgePassOld');
-                this.$chabgePassNew = this.$('#chabgePassNew');
-                this.$confirnChabgePassNew = this.$('#confirnChabgePassNew');
+                this.$changePassOld = this.$('#changePassOld');
+                this.$changePassNew = this.$('#changePassNew');
+                this.$confirmChangePassNew = this.$('#confirmChangePassNew');
                 this.$confirmDelete = this.$('#confirmDelete');
                 this.$passForDelete = this.$('#passForDelete');
             },
 
             render: function () {
-                this.$el.html(this.template());
+                this.$el.html(this.template(this.model.toJSON()));
+                this.bindFieldToView();
             },
 
             changeName: function () {
                 this.model.set({
                     'storedParameter': 'name',
                     'newName': this.$newName.val().trim()
-                });
-                this.model.save("", "", {
-                    error: function () {
-                        this.simpAlertModel.set({
-                            type: 'warning',
-                            textAlert: 'Вы ошиблись при вводе логина или пароля.'
-                        });
-                        this.simpAlertView.render();
-                    }.bind(this)
-                });
+                }).save();
+            },
+
+            keypressOnNewName: function (e) {
+                if (e.keyCode !== 13) {
+                    return;
+                }
+                this.changeName();
             },
 
             changeEmail: function () {
-                this.model.ser('storedParameter', 'email');
-                alert('changeEmail');
+                this.model.set({
+                    'storedParameter': 'email',
+                    'newEmail': this.$newEmail.val().trim()
+                }).save();
             },
 
             changePassword: function () {

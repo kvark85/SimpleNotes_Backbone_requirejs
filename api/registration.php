@@ -119,7 +119,7 @@ if ($id != "" && $regNum != "") {
 }
 
 if ($step == 4) {
-    $query = "UPDATE sn_user SET regNum = '', password = sha('$password') WHERE user_id  = $id";
+    $query = "UPDATE sn_user SET regNum = '', password = sha('$password'), registration_date = CURDATE() WHERE user_id  = $id";
     $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Error: no connect without NySQL-server');
     mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"');
     mysqli_close($dbc);
