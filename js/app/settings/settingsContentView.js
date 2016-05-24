@@ -9,15 +9,20 @@ define(['backbone',
 
             events: {
                 'click #saveName': 'changeName',
+                'keypress #newName': 'keypressOnNewName',
                 'click #saveEmail': 'changeEmail',
+                'keypress #newEmail': 'keypressOnNewEmail',
                 'click #savePassword': 'changePassword',
-                'click #doDelete': 'deleteUser',
-                'keypress #newName': 'keypressOnNewName'
+                'click #doDelete': 'deleteUser'
+
             },
 
             initialize: function () {
                 this.render();
-                this.listenTo(this.model, 'change:fromSocialNet', this.render);
+                this.listenTo(this.model, 'change', function () {
+
+                    this.render();
+                }.bind(this));
             },
 
             bindFieldToView: function () {
@@ -37,6 +42,7 @@ define(['backbone',
 
             changeName: function () {
                 this.model.set({
+                    'success': false,
                     'storedParameter': 'name',
                     'newName': this.$newName.val().trim()
                 }).save();
@@ -51,9 +57,17 @@ define(['backbone',
 
             changeEmail: function () {
                 this.model.set({
+                    'success': false,
                     'storedParameter': 'email',
                     'newEmail': this.$newEmail.val().trim()
                 }).save();
+            },
+
+            keypressOnNewEmail: function (e) {
+                if (e.keyCode !== 13) {
+                    return;
+                }
+                this.changeEmail();
             },
 
             changePassword: function () {

@@ -15,7 +15,8 @@ define(['backbone',
                 '!/todo': 'todo',
                 '!/registration': 'registration',
                 '!/registration/:id/:reqNum': 'registration',
-                '!/settings': 'settings'
+                '!/settings': 'settings',
+                '!/settings/:id/:reqNum': 'settings'
             },
 
             login: function () {
@@ -30,8 +31,8 @@ define(['backbone',
                 new RegistrationGeneralView({postData: {id: id, regNum: regNum}});
             },
 
-            settings: function () {
-                new SettingsGeneralView();
+            settings: function (id, emailNum) {
+                new SettingsGeneralView({postData: {id: id, emailNum: emailNum}});
             }
         });
         return Router;

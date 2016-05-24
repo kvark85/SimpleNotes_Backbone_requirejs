@@ -3,7 +3,9 @@ define(['backbone'], function (Backbone) {
     var Model = Backbone.Model.extend({
         defaults: {
             storedParameter: '',
+            success: false,
             name: '',
+            email: '',
             newName: '',
             newEmail: '',
             changePassOld: '',
@@ -16,17 +18,20 @@ define(['backbone'], function (Backbone) {
         },
         url: '/api/settings.php',
         validate: function (attrs) {
-            if (attrs.storedParameter === "name" && attrs.newName === "") {
+            if (attrs.storedParameter === "name" && !attrs.success && attrs.newName === "") {
                 return "Поле для нового имени не должно быть пустым.";
             }
-            if (attrs.storedParameter === "name" && attrs.newName === attrs.name) {
+            if (attrs.storedParameter === "name" && !attrs.success && attrs.newName === attrs.name) {
                 return "Ваше текущее имя \"" + attrs.name + "\". Введите другое имя, если вы хотите его изменить.";
             }
-            if (attrs.storedParameter === "email" && attrs.newEmail === "") {
+            if (attrs.storedParameter === "email" && !attrs.success && attrs.newEmail === "") {
                 return "Поле нового электронного адреса не должно быть пустым.";
             }
-            if (attrs.storedParameter === "email" && !/@/.test(attrs.newEmail)) {
+            if (attrs.storedParameter === "email" && !attrs.success && !/@/.test(attrs.newEmail)) {
                 return "Вы ошиблись при вводе адркса электронной почты.";
+            }
+            if (attrs.storedParameter === "email" && !attrs.success && attrs.newEmail === attrs.email) {
+                return "E-mail который вы вводите, уже привязан к вашей учетной записи.";
             }
         }
     });

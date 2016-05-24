@@ -7,15 +7,23 @@
         <div class="panel panel-default">
           <div class="panel-heading" role="tab" id="headingName">
             <h4 class="panel-title">
-              <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseName"
-                 aria-expanded="false" aria-controls="collapseName">
+              <a class="collapsed"
+                 role="button"
+                 data-toggle="collapse"
+                 data-parent="#accordion"
+                 href="#collapseName"
+                 aria-expanded="<% if (storedParameter === 'name') { %>true<% } else { %>false<% } %>"
+                 aria-controls="collapseName">
                 Изменить имя
               </a>
             </h4>
           </div>
-          <div id="collapseName" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingName">
+          <div id="collapseName" class="panel-collapse collapse <% if (storedParameter === 'name') { %>in<% } %>"
+               role="tabpanel" aria-labelledby="headingName">
             <div class="panel-body">
               <div class="form-group">
+                <span
+                  class="help-block">Ваше текушее имя "<%- name%>". Вы можете изменить его, используя поле ниже</span>
                 <input class="form-control" id="newName" placeholder="Новое имя" type="text" value="">
               </div>
               <button id="saveName" type="submit" class="btn btn-info">Изменить имя</button>
@@ -28,16 +36,25 @@
         <div class="panel panel-default">
           <div class="panel-heading" role="tab" id="headingEmail">
             <h4 class="panel-title">
-              <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseEmail"
-                 aria-expanded="false" aria-controls="collapseEmail">
+              <a class="collapsed"
+                 role="button"
+                 data-toggle="collapse"
+                 data-parent="#accordion"
+                 href="#collapseEmail"
+                 aria-expanded="false"
+                 aria-expanded="<% if (storedParameter === 'email') { %>true<% } else { %>false<% } %>"
+                 aria-controls="collapseEmail">
                 Изменить E-mail
               </a>
             </h4>
           </div>
-          <div id="collapseEmail" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingEmail">
+          <div id="collapseEmail" class="panel-collapse collapse <% if (storedParameter === 'email') { %>in<% } %>"
+               role="tabpanel" aria-labelledby="headingEmail">
             <div class="panel-body">
               <div class="form-group">
-                <input class="form-control" id="newEmail" placeholder="Новый E-mail" type="text" value="">
+                <span class="help-block">В данный момент Ваш Email "<%- email %>". Для изменения E-mail используйте поле ниже</span>
+                <input class="form-control" id="newEmail" placeholder="Новый E-mail" type="text"
+                       value="<%- newEmail %>">
               </div>
               <button id="saveEmail" type="submit" class="btn btn-info">Сохранить E-mail</button>
               </div>
