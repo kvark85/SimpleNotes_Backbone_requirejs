@@ -33,6 +33,22 @@ define(['backbone'], function (Backbone) {
             if (attrs.storedParameter === "email" && !attrs.success && attrs.newEmail === attrs.email) {
                 return "E-mail который вы вводите, уже привязан к вашей учетной записи.";
             }
+
+            if (attrs.storedParameter === "password" && !attrs.success && attrs.changePassOld === "") {
+                return "Поле старого пароля не должно быть пустым.";
+            }
+            if (attrs.storedParameter === "password" && !attrs.success && attrs.changePassNew === "") {
+                return "Поле нового пароля не должно быть пустым.";
+            }
+            if (attrs.storedParameter === "password" && !attrs.success && (attrs.changePassOld === attrs.changePassNew)) {
+                return "Новый пароль должен отличаться от старого.";
+            }
+            if (attrs.storedParameter === "password" && !attrs.success && attrs.confirmChangePassNew === "") {
+                return "Поле подтверждение нового пароля не должно быть пустым.";
+            }
+            if (attrs.storedParameter === "password" && !attrs.success && (attrs.changePassNew !== attrs.confirmChangePassNew)) {
+                return "Поля нового пароля и подтверждения нового пароля не совпадают.";
+            }
         }
     });
     return Model;

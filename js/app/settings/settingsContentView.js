@@ -13,14 +13,15 @@ define(['backbone',
                 'click #saveEmail': 'changeEmail',
                 'keypress #newEmail': 'keypressOnNewEmail',
                 'click #savePassword': 'changePassword',
+                'keypress #changePassOld': 'passwordFocusHandler',
+                'keypress #changePassNew': 'passwordFocusHandler',
+                'keypress #confirmChangePassNew': 'passwordFocusHandler',
                 'click #doDelete': 'deleteUser'
-
             },
 
             initialize: function () {
                 this.render();
                 this.listenTo(this.model, 'change', function () {
-
                     this.render();
                 }.bind(this));
             },
@@ -71,12 +72,32 @@ define(['backbone',
             },
 
             changePassword: function () {
-                this.model.ser('storedParameter', 'password');
-                alert('changePassword');
+                this.model.set({
+                    'success': false,
+                    'storedParameter': 'password',
+                    'changePassOld': this.$changePassOld.val().trim(),
+                    'changePassNew': this.$changePassNew.val().trim(),
+                    'confirmChangePassNew': this.$confirmChangePassNew.val().trim()
+                }).save();
+            },
+
+            passwordFocusHandler: function (e) {
+                if (e.keyCode !== 13) {
+                    return;
+                }
+                if ($(e.target).attr('id') === 'changePassOld') {
+                    this.$changePassNew.focus();
+                }
+                if ($(e.target).attr('id') === 'changePassNew') {
+                    this.$confirmChangePassNew.focus();
+                }
+                if ($(e.target).attr('id') === 'confirmChangePassNew') {
+                    this.changePassword();
+                }
             },
 
             deleteUser: function () {
-                this.model.ser('storedParameter', 'delete');
+                this.model.set('storedParameter', 'delete');
                 alert('deleteUser');
             }
         });

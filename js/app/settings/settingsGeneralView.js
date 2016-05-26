@@ -26,24 +26,11 @@ define(['backbone',
                 this.simpAlertModel = new SimpAlertModel(); // создаем модель для информационных сообщений
                 this.simpAlertView = new SimpAlertView({model: this.simpAlertModel}); //создаем новое view для отображения информационного сообщения
 
-                this.user.save("", "", {
-                    success: function () {
-                        //zzz
-                        this.header.render();
-                    }.bind(this),
+                this.user.fetch({
                     error: function () {
                         location.href = '';
-                    }.bind(this)
+                    }
                 });
-
-                //this.user.fetch({
-                //    success: function () {
-                //        this.header.render();
-                //    }.bind(this),
-                //    error: function () {
-                //        location.href = '';
-                //    }
-                //});
 
                 this.listenTo(this.user, 'invalid', function (model, error) { //привязываем вывод информационного сообщения на валидацию модели
                     this.simpAlertModel.set({type: 'warning', textAlert: error}); //помещаем текст ошибки в модель

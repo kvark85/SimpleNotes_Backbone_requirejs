@@ -16,6 +16,7 @@ $id = isset($data['id']) ? $data['id'] : "";
 $storedParameter = isset($data['storedParameter']) ? $data['storedParameter'] : "";
 $newName = isset($data['newName']) ? $data['newName'] : "";
 $newEmail = isset($data['newEmail']) ? $data['newEmail'] : "";
+$changePassOldl = isset($data['changePassOld']) ? $data['changePassOld'] : "";
 $changePassNew = isset($data['changePassNew']) ? $data['changePassNew'] : "";
 $confirmDelete = isset($data['confirmDelete']) ? $data['confirmDelete'] : "";
 $passForDelete = isset($data['passForDelete']) ? $data['passForDelete'] : "";
@@ -112,6 +113,28 @@ switch ($storedParameter) {
             break;
         }
     case "password":
+        $query = "SELECT password FROM sn_user WHERE user_id = $sn_user_id";
+        $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Error: no connect without NySQL-server');
+        $result = mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"');
+        $row = mysqli_fetch_array($result);
+
+        if (sha1($changePassOldl) == $row['password']) {
+            $query = "UPDATE sn_user SET password = sha('$changePassNew') WHERE user_id  = $sn_user_id";
+            $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Error: no connect without NySQL-server');
+            $result = mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"');
+            mysqli_close($dbc);
+            echo '{
+                "storedParameter": "' . $storedParameter . '", "success": true, "name": "' . $firstRowFromDb['name'] . '", "newName": "",
+                "newEmail": "", "changePassOld": "", "changePassNew": "", "confirmChangePassNew": "", "confirmDelete": "", "passForDelete": "",
+                "message": {"type": "success", "textAlert": "Пароль изменен."}}';
+        } else {
+            echo '{
+                "storedParameter": "' . $storedParameter . '", "success": true, "name": "' . $firstRowFromDb['name'] . '", "newName": "",
+                "newEmail": "", "changePassOld": "' . $changePassOldl . '", "changePassNew": "' . $changePassNew . '", "confirmChangePassNew": "' . $changePassNew . '", "confirmDelete": "", "passForDelete": "",
+                "message": {"type": "warning", "textAlert": "Вы неправильно ввели старый пароль."}}';
+        }
+
+
         break;
     case "delete":
         break;

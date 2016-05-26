@@ -41,7 +41,6 @@
                  data-toggle="collapse"
                  data-parent="#accordion"
                  href="#collapseEmail"
-                 aria-expanded="false"
                  aria-expanded="<% if (storedParameter === 'email') { %>true<% } else { %>false<% } %>"
                  aria-controls="collapseEmail">
                 Изменить E-mail
@@ -66,24 +65,32 @@
         <div class="panel panel-default">
           <div class="panel-heading" role="tab" id="headingPassword">
             <h4 class="panel-title">
-              <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion"
+              <a class="collapsed"
+                 role="button"
+                 data-toggle="collapse"
+                 data-parent="#accordion"
                  href="#collapsePassword"
-                 aria-expanded="false" aria-controls="collapsePassword">
+                 aria-expanded="<% if (storedParameter === 'password') { %>true<% } else { %>false<% } %>"
+                 aria-controls="collapsePassword">
                 Изменить пароль
               </a>
             </h4>
           </div>
-          <div id="collapsePassword" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingPassword">
+          <div id="collapsePassword"
+               class="panel-collapse collapse <% if (storedParameter === 'password') { %>in<% } %>" role="tabpanel"
+               aria-labelledby="headingPassword">
             <div class="panel-body">
               <div class="form-group">
-                <input class="form-control" id="changePassOld" placeholder="Старый пароль" type="text" value="">
+                <input class="form-control" id="changePassOld" placeholder="Старый пароль" type="text"
+                       value="<%- changePassOld %>">
               </div>
               <div class="form-group">
-                <input class="form-control" id="changePassNew" placeholder="Новый пароль" type="text" value="">
+                <input class="form-control" id="changePassNew" placeholder="Новый пароль" type="password"
+                       value="<%- changePassNew %>">
               </div>
               <div class="form-group">
-                <input class="form-control" id="confirmChangePassNew" placeholder="Новый пароль еще раз" type="text"
-                       value="">
+                <input class="form-control" id="confirmChangePassNew" placeholder="Новый пароль еще раз" type="password"
+                       value="<%- confirmChangePassNew %>">
               </div>
               <button id="savePassword" type="submit" class="btn btn-info">Сохранить пароль</button>
               </div>
