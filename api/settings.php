@@ -133,10 +133,33 @@ switch ($storedParameter) {
                 "newEmail": "", "changePassOld": "' . $changePassOldl . '", "changePassNew": "' . $changePassNew . '", "confirmChangePassNew": "' . $changePassNew . '", "confirmDelete": "", "passForDelete": "",
                 "message": {"type": "warning", "textAlert": "Вы неправильно ввели старый пароль."}}';
         }
-
-
         break;
     case "delete":
+        $query = "SELECT password FROM sn_user WHERE user_id = $sn_user_id";
+        $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Error: no connect without NySQL-server');
+        $result = mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"');
+        $row = mysqli_fetch_array($result);
+
+        if (sha1($passForDelete) == $row['password']) {
+            $query = "DELETE FROM sn_todo  WHERE user_id = $sn_user_id";
+            $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Error: no connect without NySQL-server');
+            $result = mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"');
+            $query = "DELETE FROM sn_user  WHERE user_id = $sn_user_id";
+            $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Error: no connect without NySQL-server');
+            $result = mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"');
+            mysqli_close($dbc);
+
+
+            setcookie('sn_user_id', '', time() - 3600);
+            unset($_SESSION['sn_user_id']);
+
+            echo '{"delete": true}';
+        } else {
+            echo '{
+                "storedParameter": "' . $storedParameter . '", "success": true, "name": "' . $firstRowFromDb['name'] . '", "newName": "",
+                "newEmail": "", "changePassOld": "", "changePassNew": "", "confirmChangePassNew": "", "confirmDelete": "' . $confirmDelete . '", "passForDelete": "' . $passForDelete . '",
+                "message": {"type": "warning", "textAlert": "Вы ошиблись при вводе пароля."}}';
+        }
         break;
     default:
         echo $finishString;

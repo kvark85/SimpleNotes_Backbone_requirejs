@@ -24,6 +24,11 @@ define(['backbone',
                 this.listenTo(this.model, 'change', function () {
                     this.render();
                 }.bind(this));
+                this.listenTo(this.model, 'change:delete', function () {
+                    if (this.model.get('delete')) {
+                        location.href = '';
+                    }
+                }.bind(this));
             },
 
             bindFieldToView: function () {
@@ -97,8 +102,12 @@ define(['backbone',
             },
 
             deleteUser: function () {
-                this.model.set('storedParameter', 'delete');
-                alert('deleteUser');
+                this.model.set({
+                    'success': false,
+                    'storedParameter': 'delete',
+                    'confirmDelete': this.$confirmDelete.prop('checked'),
+                    'passForDelete': this.$passForDelete.val().trim()
+                }).save();
             }
         });
         return View;

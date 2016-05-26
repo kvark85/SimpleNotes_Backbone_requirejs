@@ -102,22 +102,30 @@
         <div class="panel panel-default">
           <div class="panel-heading" role="tab" id="headingDelete">
             <h4 class="panel-title">
-              <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseDelete"
-                 aria-expanded="false" aria-controls="collapseDelete">
+              <a class="collapsed"
+                 role="button"
+                 data-toggle="collapse"
+                 data-parent="#accordion"
+                 href="#collapseDelete"
+                 aria-expanded="<% if (storedParameter === 'delete') { %>true<% } else { %>false<% } %>"
+                 aria-controls="collapseDelete">
                 Удалить пользователя
               </a>
             </h4>
           </div>
-          <div id="collapseDelete" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingDelete">
+          <div id="collapseDelete" class="panel-collapse collapse <% if (storedParameter === 'delete') { %>in<% } %>"
+               role="tabpanel" aria-labelledby="headingDelete">
             <div class="panel-body">
               Вы действительно хотите удалить пользователя?
               <div class="checkbox">
                 <label>
-                  <input id="confirmDelete" type="checkbox"/>Да,я действительно хочу удалить пользователя.
+                  <input id="confirmDelete" type="checkbox" <% if (confirmDelete) { %>checked<% } %>/> Да,я
+                  действительно хочу удалить пользователя.
                 </label>
               </div>
               <div class="form-group">
-                <input class="form-control" id="passForDelete" placeholder="Введите пароль" type="text" value="">
+                <input class="form-control" id="passForDelete" placeholder="Введите пароль" type="text"
+                       value="<%- passForDelete %>">
               </div>
               <button id="doDelete" type="submit" class="btn btn-info">Удалить пользователя</button>
             </div>

@@ -46,8 +46,16 @@ define(['backbone'], function (Backbone) {
             if (attrs.storedParameter === "password" && !attrs.success && attrs.confirmChangePassNew === "") {
                 return "Поле подтверждение нового пароля не должно быть пустым.";
             }
-            if (attrs.storedParameter === "password" && !attrs.success && (attrs.changePassNew !== attrs.confirmChangePassNew)) {
+            if (attrs.storedParameter === "password" && !attrs.success && attrs.changePassNew !== attrs.confirmChangePassNew) {
                 return "Поля нового пароля и подтверждения нового пароля не совпадают.";
+            }
+
+            if (attrs.storedParameter === "delete" && !attrs.success && !attrs.confirmDelete) {
+                return "Для удаления профиля, необходимо выставить флаг \"Да,я действительно хочу удалить пользователя.\"";
+            }
+
+            if (attrs.storedParameter === "delete" && !attrs.success && attrs.passForDelete === "") {
+                return "Поле пароля не должно быть пустым.";
             }
         }
     });
