@@ -23,7 +23,7 @@ $passForDelete = isset($data['passForDelete']) ? $data['passForDelete'] : "";
 $emailNum = isset($data['emailNum']) ? $data['emailNum'] : "";
 
 if ($id != "" && $emailNum != "") {
-    $query = "SELECT * FROM sn_user WHERE user_id = $id AND emailNum= $emailNum";
+    $query = "SELECT name, new_email FROM sn_user WHERE user_id = $id AND emailNum= $emailNum";
     $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Error: no connect without NySQL-server');
     $result = mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"');
     mysqli_close($dbc);
@@ -43,7 +43,7 @@ if ($id != "" && $emailNum != "") {
     };
 }
 
-$query = "SELECT * FROM sn_user WHERE user_id = '$sn_user_id'";
+$query = "SELECT password, name, login, email, photo_rec FROM sn_user WHERE user_id = '$sn_user_id'";
 $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Error: no connect without NySQL-server');
 $result = mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"');
 mysqli_close($dbc);
@@ -67,7 +67,7 @@ switch ($storedParameter) {
     case "email":
         $emailNum = (string)mt_rand();
 
-        $query = "SELECT * FROM sn_user WHERE email = '$newEmail'";
+        $query = "SELECT user_id FROM sn_user WHERE email = '$newEmail'";
         $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Error: no connect without NySQL-server');
         $result = mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"');
         if (mysqli_num_rows($result) != 0) {
@@ -113,12 +113,7 @@ switch ($storedParameter) {
             break;
         }
     case "password":
-        $query = "SELECT password FROM sn_user WHERE user_id = $sn_user_id";
-        $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Error: no connect without NySQL-server');
-        $result = mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"');
-        $row = mysqli_fetch_array($result);
-
-        if (sha1($changePassOldl) == $row['password']) {
+        if (sha1($changePassOldl) == $firstRowFromDb['password']) {
             $query = "UPDATE sn_user SET password = sha('$changePassNew') WHERE user_id  = $sn_user_id";
             $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Error: no connect without NySQL-server');
             $result = mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"');
@@ -135,12 +130,7 @@ switch ($storedParameter) {
         }
         break;
     case "delete":
-        $query = "SELECT password FROM sn_user WHERE user_id = $sn_user_id";
-        $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Error: no connect without NySQL-server');
-        $result = mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"');
-        $row = mysqli_fetch_array($result);
-
-        if (sha1($passForDelete) == $row['password']) {
+        if (sha1($passForDelete) == $firstRowFromDb['password']) {
             $query = "DELETE FROM sn_todo  WHERE user_id = $sn_user_id";
             $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Error: no connect without NySQL-server');
             $result = mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"');
@@ -148,7 +138,6 @@ switch ($storedParameter) {
             $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Error: no connect without NySQL-server');
             $result = mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"');
             mysqli_close($dbc);
-
 
             setcookie('sn_user_id', '', time() - 3600);
             unset($_SESSION['sn_user_id']);

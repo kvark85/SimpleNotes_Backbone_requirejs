@@ -26,7 +26,7 @@ define(['backbone',
                 this.simpAlertModel = new SimpAlertModel(); // создаем модель для информационных сообщений
                 this.simpAlertView = new SimpAlertView({model: this.simpAlertModel}); //создаем новое view для отображения информационного сообщения
 
-                this.user.fetch({
+                this.user.save({
                     error: function () {
                         location.href = '';
                     }
