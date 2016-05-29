@@ -56,7 +56,7 @@ define(['backbone'], function (Backbone) {
                 return "Для удаления профиля, необходимо выставить флаг \"Да,я действительно хочу удалить пользователя.\"";
             }
 
-            if (attrs.storedParameter === "delete" && attrs.needWalidate && attrs.passForDelete === "") {
+            if (attrs.storedParameter === "delete" && attrs.needWalidate && !attrs.fromSocialNet && attrs.passForDelete === "") {
                 return "Поле пароля не должно быть пустым.";
             }
         }

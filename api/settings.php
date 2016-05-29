@@ -21,6 +21,7 @@ $changePassNew = isset($data['changePassNew']) ? $data['changePassNew'] : "";
 $confirmDelete = isset($data['confirmDelete']) ? $data['confirmDelete'] : "";
 $passForDelete = isset($data['passForDelete']) ? $data['passForDelete'] : "";
 $emailNum = isset($data['emailNum']) ? $data['emailNum'] : "";
+$fromSocialNet = isset($data['fromSocialNet']) ? $data['fromSocialNet'] : "";
 
 if ($id != "" && $emailNum != "") {
     $query = "SELECT name, new_email FROM sn_user WHERE user_id = $id AND emailNum= $emailNum";
@@ -43,7 +44,7 @@ if ($id != "" && $emailNum != "") {
     };
 }
 
-$query = "SELECT password, name, login, email, photo_rec FROM sn_user WHERE user_id = '$sn_user_id'";
+$query = "SELECT password, name, login, email, photo_rec, vk_user_id FROM sn_user WHERE user_id = '$sn_user_id'";
 $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Error: no connect without NySQL-server');
 $result = mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"');
 mysqli_close($dbc);
@@ -131,28 +132,37 @@ switch ($storedParameter) {
         }
         break;
     case "delete":
-        if (sha1($passForDelete) == $firstRowFromDb['password']) {
-            $query = "DELETE FROM sn_todo  WHERE user_id = $sn_user_id";
-            $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Error: no connect without NySQL-server');
-            $result = mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"');
-            $query = "DELETE FROM sn_user  WHERE user_id = $sn_user_id";
-            $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Error: no connect without NySQL-server');
-            $result = mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"');
-            mysqli_close($dbc);
-
-            setcookie('sn_user_id', '', time() - 3600);
-            unset($_SESSION['sn_user_id']);
-
+        if ($fromSocialNet) {
+            deleteUser($sn_user_id);
             echo '{"delete": true}';
         } else {
-            echo '{
-                "storedParameter": "' . $storedParameter . '", "needWalidate": false, "name": "' . $firstRowFromDb['name'] . '", "newName": "",
-                "newEmail": "", "changePassOld": "", "changePassNew": "", "confirmChangePassNew": "", "confirmDelete": "' . $confirmDelete . '", "passForDelete": "' . $passForDelete . '",
-                "message": {"type": "warning", "textAlert": "Вы ошиблись при вводе пароля."}}';
+            if (sha1($passForDelete) == $firstRowFromDb['password']) {
+                deleteUser($sn_user_id);
+                echo '{"delete": true}';
+            } else {
+                echo '{
+                    "storedParameter": "' . $storedParameter . '", "needWalidate": false, "name": "' . $firstRowFromDb['name'] . '", "newName": "",
+                    "newEmail": "", "changePassOld": "", "changePassNew": "", "confirmChangePassNew": "", "confirmDelete": "' . $confirmDelete . '", "passForDelete": "' . $passForDelete . '",
+                    "message": {"type": "warning", "textAlert": "Вы ошиблись при вводе пароля."}}';
+            }
         }
         break;
     default:
         echo $finishString;
         exit;
+}
+
+function deleteUser($userId)
+{
+    $query = "DELETE FROM sn_todo  WHERE user_id = $userId";
+    $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Error: no connect without NySQL-server');
+    $result = mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"');
+    $query = "DELETE FROM sn_user  WHERE user_id = $userId";
+    $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Error: no connect without NySQL-server');
+    $result = mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"');
+    mysqli_close($dbc);
+
+    setcookie('sn_user_id', '', time() - 3600);
+    unset($_SESSION['sn_user_id']);
 }
 ?>

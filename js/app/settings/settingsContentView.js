@@ -136,7 +136,7 @@ define(['backbone',
                     'waiter': true,
                     'storedParameter': 'delete',
                     'confirmDelete': this.$confirmDelete.prop('checked'),
-                    'passForDelete': this.$passForDelete.val().trim()
+                    'passForDelete': this.$passForDelete.val() && this.$passForDelete.val().trim()
                 }).save("", "", {
                     'success': function () {
                         this.resetWaiter();

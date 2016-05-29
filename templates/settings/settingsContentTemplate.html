@@ -131,10 +131,12 @@
                   действительно хочу удалить пользователя.
                 </label>
               </div>
+              <% if (!fromSocialNet) { %>
               <div class="form-group">
                 <input class="form-control" id="passForDelete" placeholder="Введите пароль" type="password"
                        value="<%- passForDelete %>">
               </div>
+              <% } %>
               <button id="doDelete" type="submit" class="btn btn-info">Удалить пользователя</button>
             </div>
           </div>
