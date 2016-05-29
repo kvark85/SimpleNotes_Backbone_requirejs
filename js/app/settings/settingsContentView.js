@@ -46,12 +46,25 @@ define(['backbone',
                 this.bindFieldToView();
             },
 
+            resetWaiter: function () {
+                this.model.set('waiter', false);
+            },
+
             changeName: function () {
                 this.model.set({
-                    'success': false,
+                    'needWalidate': true,
+                    'waiter': true,
                     'storedParameter': 'name',
                     'newName': this.$newName.val().trim()
-                }).save();
+                }).save("", "", {
+                    'wait': true,
+                    success: function () {
+                        this.resetWaiter();
+                    }.bind(this),
+                    error: function () {
+                        this.resetWaiter();
+                    }.bind(this)
+                });
             },
 
             keypressOnNewName: function (e) {
@@ -63,10 +76,18 @@ define(['backbone',
 
             changeEmail: function () {
                 this.model.set({
-                    'success': false,
+                    'needWalidate': true,
+                    'waiter': true,
                     'storedParameter': 'email',
                     'newEmail': this.$newEmail.val().trim()
-                }).save();
+                }).save("", "", {
+                    'success': function () {
+                        this.resetWaiter();
+                    }.bind(this),
+                    'error': function () {
+                        this.resetWaiter();
+                    }.bind(this)
+                });
             },
 
             keypressOnNewEmail: function (e) {
@@ -78,12 +99,20 @@ define(['backbone',
 
             changePassword: function () {
                 this.model.set({
-                    'success': false,
+                    'needWalidate': true,
+                    'waiter': true,
                     'storedParameter': 'password',
                     'changePassOld': this.$changePassOld.val().trim(),
                     'changePassNew': this.$changePassNew.val().trim(),
                     'confirmChangePassNew': this.$confirmChangePassNew.val().trim()
-                }).save();
+                }).save("", "", {
+                    'success': function () {
+                        this.resetWaiter();
+                    }.bind(this),
+                    'error': function () {
+                        this.resetWaiter();
+                    }.bind(this)
+                });
             },
 
             passwordFocusHandler: function (e) {
@@ -103,11 +132,19 @@ define(['backbone',
 
             deleteUser: function () {
                 this.model.set({
-                    'success': false,
+                    'needWalidate': true,
+                    'waiter': true,
                     'storedParameter': 'delete',
                     'confirmDelete': this.$confirmDelete.prop('checked'),
                     'passForDelete': this.$passForDelete.val().trim()
-                }).save();
+                }).save("", "", {
+                    'success': function () {
+                        this.resetWaiter();
+                    }.bind(this),
+                    'error': function () {
+                        this.resetWaiter();
+                    }.bind(this)
+                });
             }
         });
         return View;

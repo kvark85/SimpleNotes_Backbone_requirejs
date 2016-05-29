@@ -33,19 +33,18 @@ define(['backbone',
                 });
 
                 this.listenTo(this.user, 'invalid', function (model, error) { //привязываем вывод информационного сообщения на валидацию модели
-                    this.simpAlertModel.set({type: 'warning', textAlert: error}); //помещаем текст ошибки в модель
-                    this.simpAlertView.render();
+                    this.user.set('message', {type: 'warning', textAlert: error});
+                    this.user.set('waiter', false);
                 }, this);
 
-                this.listenTo(this.user, 'change', function (model, error, a, b) { //привязываем вывод информационного сообщения на валидацию модели
-                    if (model.get('message')) {
+                this.listenTo(this.user, 'change:message', function (model) {
+                    if (model.get('message').type) {
                         this.simpAlertModel.set({
                             type: model.get('message').type,
                             textAlert: model.get('message').textAlert
-                        }); //помещаем текст ошибки в модель
-                        if (model.get('success')) {
-                            this.simpAlertView.render();
-                        }
+                        });
+                        this.simpAlertView.render();
+                        this.user.set('message', {});
                     }
                 }, this);
             },

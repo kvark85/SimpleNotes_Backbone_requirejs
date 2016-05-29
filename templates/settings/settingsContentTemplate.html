@@ -1,6 +1,14 @@
 ﻿<div class="container">
   <div class="row">
     <div class="col-md-8 col-md-offset-4">
+      <div id="localWaiter" class="local-waiter <% if (!waiter) { %>gm-hidden<% } %>">
+        <div class="local-waiter-field">
+          <div class="local-waiter-el">
+            <img src="img/upload.gif" alt="" class="local-waiter-img">
+          </div>
+        </div>
+      </div>
+
       <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
         <% if (!fromSocialNet) { %>
         <!-- Блок изменения имени Start -->

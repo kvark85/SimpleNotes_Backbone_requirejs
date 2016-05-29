@@ -4,6 +4,7 @@ define(['backbone'], function (Backbone) {
         defaults: {
             storedParameter: '',
             success: false,
+            waiter: false,
             name: '',
             email: '',
             newName: '',
@@ -14,47 +15,48 @@ define(['backbone'], function (Backbone) {
             confirmDelete: '',
             passForDelete: '',
             photo_rec: '',
+            message: {},
             fromSocialNet: true
         },
         url: '/api/settings.php',
         validate: function (attrs) {
-            if (attrs.storedParameter === "name" && !attrs.success && attrs.newName === "") {
+            if (attrs.storedParameter === "name" && attrs.needWalidate && attrs.newName === "") {
                 return "Поле для нового имени не должно быть пустым.";
             }
-            if (attrs.storedParameter === "name" && !attrs.success && attrs.newName === attrs.name) {
+            if (attrs.storedParameter === "name" && attrs.needWalidate && attrs.newName === attrs.name) {
                 return "Ваше текущее имя \"" + attrs.name + "\". Введите другое имя, если вы хотите его изменить.";
             }
-            if (attrs.storedParameter === "email" && !attrs.success && attrs.newEmail === "") {
+            if (attrs.storedParameter === "email" && attrs.needWalidate && attrs.newEmail === "") {
                 return "Поле нового электронного адреса не должно быть пустым.";
             }
-            if (attrs.storedParameter === "email" && !attrs.success && !/@/.test(attrs.newEmail)) {
+            if (attrs.storedParameter === "email" && attrs.needWalidate && !/@/.test(attrs.newEmail)) {
                 return "Вы ошиблись при вводе адркса электронной почты.";
             }
-            if (attrs.storedParameter === "email" && !attrs.success && attrs.newEmail === attrs.email) {
+            if (attrs.storedParameter === "email" && attrs.needWalidate && attrs.newEmail === attrs.email) {
                 return "E-mail который вы вводите, уже привязан к вашей учетной записи.";
             }
 
-            if (attrs.storedParameter === "password" && !attrs.success && attrs.changePassOld === "") {
+            if (attrs.storedParameter === "password" && attrs.needWalidate && attrs.changePassOld === "") {
                 return "Поле старого пароля не должно быть пустым.";
             }
-            if (attrs.storedParameter === "password" && !attrs.success && attrs.changePassNew === "") {
+            if (attrs.storedParameter === "password" && attrs.needWalidate && attrs.changePassNew === "") {
                 return "Поле нового пароля не должно быть пустым.";
             }
-            if (attrs.storedParameter === "password" && !attrs.success && (attrs.changePassOld === attrs.changePassNew)) {
+            if (attrs.storedParameter === "password" && attrs.needWalidate && (attrs.changePassOld === attrs.changePassNew)) {
                 return "Новый пароль должен отличаться от старого.";
             }
-            if (attrs.storedParameter === "password" && !attrs.success && attrs.confirmChangePassNew === "") {
+            if (attrs.storedParameter === "password" && attrs.needWalidate && attrs.confirmChangePassNew === "") {
                 return "Поле подтверждение нового пароля не должно быть пустым.";
             }
-            if (attrs.storedParameter === "password" && !attrs.success && attrs.changePassNew !== attrs.confirmChangePassNew) {
+            if (attrs.storedParameter === "password" && attrs.needWalidate && attrs.changePassNew !== attrs.confirmChangePassNew) {
                 return "Поля нового пароля и подтверждения нового пароля не совпадают.";
             }
 
-            if (attrs.storedParameter === "delete" && !attrs.success && !attrs.confirmDelete) {
+            if (attrs.storedParameter === "delete" && attrs.needWalidate && !attrs.confirmDelete) {
                 return "Для удаления профиля, необходимо выставить флаг \"Да,я действительно хочу удалить пользователя.\"";
             }
 
-            if (attrs.storedParameter === "delete" && !attrs.success && attrs.passForDelete === "") {
+            if (attrs.storedParameter === "delete" && attrs.needWalidate && attrs.passForDelete === "") {
                 return "Поле пароля не должно быть пустым.";
             }
         }

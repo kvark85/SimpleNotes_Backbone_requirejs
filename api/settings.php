@@ -36,7 +36,7 @@ if ($id != "" && $emailNum != "") {
         mysqli_close($dbc);
 
         $_SESSION['sn_user_id'] = $id;
-        echo '{"storedParameter": "' . $storedParameter . '", "success": true, "name": "' . $row['name'] . '", "email": "' . $row['new_email'] . '", "newName": "",
+        echo '{"storedParameter": "' . $storedParameter . '", "needWalidate": false, "name": "' . $row['name'] . '", "email": "' . $row['new_email'] . '", "newName": "",
                 "newEmail": "", "changePassOld": "", "changePassNew": "", "confirmChangePassNew": "", "confirmDelete": "", "passForDelete": "", "fromSocialNet": false,
                 "message": {"type": "success", "textAlert": "Электронная почта успешно изменена. В текущий момент к анкете привязан E-mail \"' . $row['new_email'] . '\"."}}';
         exit;
@@ -60,7 +60,7 @@ switch ($storedParameter) {
         $result = mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"');
         mysqli_close($dbc);
         echo '{
-        "storedParameter": "' . $storedParameter . '", "success": true, "name": "' . $newName . '", "newName": "", "newEmail": "",
+        "storedParameter": "' . $storedParameter . '", "needWalidate": false, "name": "' . $newName . '", "newName": "", "newEmail": "",
         "changePassOld": "", "changePassNew": "", "confirmChangePassNew": "", "confirmDelete": "", "passForDelete": "",
         "message": {"type": "success", "textAlert": "Изменение имени прошло успешно. Теперь вы \"' . $newName . '\"."}}';
         break;
@@ -72,9 +72,10 @@ switch ($storedParameter) {
         $result = mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"');
         if (mysqli_num_rows($result) != 0) {
             echo '{
-                "storedParameter": "' . $storedParameter . '", "success": false, "name": "' . $firstRowFromDb['name'] . '", "newName": "",
+                "storedParameter": "' . $storedParameter . '", "needWalidate": false, "name": "' . $firstRowFromDb['name'] . '", "newName": "",
                 "newEmail": "", "changePassOld": "", "changePassNew": "", "confirmChangePassNew": "", "confirmDelete": "", "passForDelete": "",
                 "message": {"type": "warning", "textAlert": "Данный электронный адресс уже зарегистрирован в системе."}}';
+            exit;
         }
 
 
@@ -102,12 +103,12 @@ switch ($storedParameter) {
         $resultMail = mail($newEmail, $subject, $message, $headers);
         if ($resultMail == false) {
             echo '{
-                "storedParameter": "' . $storedParameter . '", "success": true, "name": "' . $firstRowFromDb['name'] . '", "newName": "",
+                "storedParameter": "' . $storedParameter . '", "needWalidate": false, "name": "' . $firstRowFromDb['name'] . '", "newName": "",
                 "newEmail": "' . $newEmail . '", "changePassOld": "", "changePassNew": "", "confirmChangePassNew": "", "confirmDelete": "", "passForDelete": "",
                 "message": {"type": "warning", "textAlert": "При отправке электронной почты, для подтверждения нового Email, что-то пошло не так."}}';
         } else {
             echo '{
-                "storedParameter": "' . $storedParameter . '", "success": true, "name": "' . $firstRowFromDb['name'] . '", "newName": "",
+                "storedParameter": "' . $storedParameter . '", "needWalidate": false, "name": "' . $firstRowFromDb['name'] . '", "newName": "",
                 "newEmail": "", "changePassOld": "", "changePassNew": "", "confirmChangePassNew": "", "confirmDelete": "", "passForDelete": "",
                 "message": {"type": "success", "textAlert": "Запрос на изменения электронной почты принят, для подтверждения что это действительно ваш злектронный адрес будет оптравлено письмо. Проверьте почту \"' . $newEmail . '\"."}}';
             break;
@@ -119,12 +120,12 @@ switch ($storedParameter) {
             $result = mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"');
             mysqli_close($dbc);
             echo '{
-                "storedParameter": "' . $storedParameter . '", "success": true, "name": "' . $firstRowFromDb['name'] . '", "newName": "",
+                "storedParameter": "' . $storedParameter . '", "needWalidate": false, "name": "' . $firstRowFromDb['name'] . '", "newName": "",
                 "newEmail": "", "changePassOld": "", "changePassNew": "", "confirmChangePassNew": "", "confirmDelete": "", "passForDelete": "",
                 "message": {"type": "success", "textAlert": "Пароль изменен."}}';
         } else {
             echo '{
-                "storedParameter": "' . $storedParameter . '", "success": true, "name": "' . $firstRowFromDb['name'] . '", "newName": "",
+                "storedParameter": "' . $storedParameter . '", "needWalidate": false, "name": "' . $firstRowFromDb['name'] . '", "newName": "",
                 "newEmail": "", "changePassOld": "' . $changePassOldl . '", "changePassNew": "' . $changePassNew . '", "confirmChangePassNew": "' . $changePassNew . '", "confirmDelete": "", "passForDelete": "",
                 "message": {"type": "warning", "textAlert": "Вы неправильно ввели старый пароль."}}';
         }
@@ -145,7 +146,7 @@ switch ($storedParameter) {
             echo '{"delete": true}';
         } else {
             echo '{
-                "storedParameter": "' . $storedParameter . '", "success": true, "name": "' . $firstRowFromDb['name'] . '", "newName": "",
+                "storedParameter": "' . $storedParameter . '", "needWalidate": false, "name": "' . $firstRowFromDb['name'] . '", "newName": "",
                 "newEmail": "", "changePassOld": "", "changePassNew": "", "confirmChangePassNew": "", "confirmDelete": "' . $confirmDelete . '", "passForDelete": "' . $passForDelete . '",
                 "message": {"type": "warning", "textAlert": "Вы ошиблись при вводе пароля."}}';
         }
