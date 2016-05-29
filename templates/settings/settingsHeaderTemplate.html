@@ -17,19 +17,15 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav bottom-border">
-            <li class="active"><a href="#todo">Заметки <span class="sr-only">(current)</span></a></li>
+            <li class="active"><a href="#!/todo">Заметки <span class="sr-only">(current)</span></a></li>
           </ul>
 
           <ul class="nav navbar-nav navbar-right">
             <li>
               <img class="header-avtar" src="<%- photo_rec %>" alt="">
             </li>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                 aria-expanded="false">Здравствуйте, <%- name %>. <span class="caret"></span></a>
-              <ul class="dropdown-menu">
-                <li><a href="#!/todo">Заметки</a></li>
-              </ul>
+            <li>
+              <a href="#!/settings" class="dropdown-toggle">Здравствуйте, <%- name %>.</a>
             </li>
             <li><a href="api/logout.php">Выйти</a></li>
           </ul>
