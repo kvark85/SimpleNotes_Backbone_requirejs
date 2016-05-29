@@ -4,6 +4,7 @@ define(['backbone'], function (Backbone) {
         defaults: {
             login: '',
             name: '',
+            waiter: false,
             step: 1,
             email: '',
             password: '',

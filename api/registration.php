@@ -52,13 +52,11 @@ $password = isset($data['password']) ? $data['password'] : "";
 $repetPassword = isset($data['repetPassword']) ? $data['repetPassword'] : "";
 $regNum = isset($data['regNum']) ? $data['regNum'] : "";
 
-if ($id == "" && $regNum == "") {
+if ($id == "" && $regNum == "" && $login != "" && $email != "") {
     $query = "SELECT * FROM sn_user WHERE login = '$login'";
     $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Error: no connect without NySQL-server');
     $result = mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"');
-    $row = mysqli_fetch_array($result);
-    $isRegNumEmpty = isset($data['regNum']) ? false : true;
-    if ($isRegNumEmpty) {
+    if (mysqli_num_rows($result) > 0) {
         mysqli_close($dbc);
         echo '{"message": {"type": "warning", "textAlert": "Пользователь с таким логином уже зарегистрирован."}}';
         exit;
@@ -67,9 +65,7 @@ if ($id == "" && $regNum == "") {
     $query = "SELECT * FROM sn_user WHERE email = '$email'";
     $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Error: no connect without NySQL-server');
     $result = mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"');
-    $row = mysqli_fetch_array($result);
-    $isRegNumEmpty = isset($data['regNum']) ? false : true;
-    if ($isRegNumEmpty) {
+    if (mysqli_num_rows($result) > 0) {
         mysqli_close($dbc);
         echo '{"message": {"type": "warning", "textAlert": "Пользователь с такой электронной почтой уже зарегистрирован."}}';
         exit;
@@ -107,7 +103,8 @@ if ($id == "" && $regNum == "") {
     if ($resultMail == false) {
         echo '{"step": 1, "message": {"type": "warning", "textAlert": "При отправке электронной почты что-то пошло не так."}}';
     } else {
-        echo '{"step": 2, "resultMail": ' . $resultMail . '}';
+        echo '{"step": 2, "resultMail": ' . $resultMail . ',
+            "message": {"type": "success", "textAlert": "Вам будет отправлено электронное письмо, перейдите по ссылке из письма для завершения процеса регистрации."}}';
     }
     exit;
 }
@@ -119,7 +116,9 @@ if ($id != "" && $regNum != "") {
     mysqli_close($dbc);
     if (mysqli_num_rows($result) != 0) {
         $row = mysqli_fetch_array($result);
-        echo '{"id": ' . $row['user_id'] . ', "login": "' . $row['login'] . '", "name": "' . $row['name'] . '", "step": 4, "email": "' . $row['email'] . '" , "password": "", "repetPassword": "", "regId": "", "regNum": ""}';
+        echo '{"id": ' . $row['user_id'] . ', "login": "' . $row['login'] . '", "name": "' . $row['name'] . '",
+            "step": 4, "email": "' . $row['email'] . '" , "password": "", "repetPassword": "", "regId": "", "regNum": "",
+            "message": {"type": "success", "textAlert": "Регистрация почти закончена, осталось ввести какой вы хотите себе пароль."}}';
     } else {
         echo '{"login": "", "name": "", "step": 3, "email": "", "password": "", "repetPassword": "", "regId": "", "regNum": "", "message": {"type": "warning", "textAlert": "Ошибка при регистрации, если вы хотите пользоваться данным сервисом, перерегистрируйтесь."}}';
     };
@@ -131,7 +130,7 @@ if ($step == 4) {
     $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Error: no connect without NySQL-server');
     mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"');
     mysqli_close($dbc);
-    echo '{"step": 5}';
+    echo '{"step": 5, "message": {"type": "success", "textAlert": "Регистрация прошла успешно. Залогинтесь и пользуйтесь сервисом с удовольствием."}}';
     exit;
 }
 ?>
