@@ -2,12 +2,14 @@ define(['backbone',
         'app/login/loginGeneralView',
         'app/todo/todoGeneralView',
         'app/registration/registrationGeneralView',
-        'app/settings/settingsGeneralView'],
+        'app/settings/settingsGeneralView',
+        'app/restorePass/restorePassGeneralView'],
     function (Backbone,
               LoginView,
               TodoGeneralView,
               RegistrationGeneralView,
-              SettingsGeneralView) {
+              SettingsGeneralView,
+              RestorePassGeneralView) {
         'use strict';
         var Router = Backbone.Router.extend({
             routes: {
@@ -16,7 +18,9 @@ define(['backbone',
                 '!/registration': 'registration',
                 '!/registration/:id/:reqNum': 'registration',
                 '!/settings': 'settings',
-                '!/settings/:id/:reqNum': 'settings'
+                '!/settings/:id/:reqNum': 'settings',
+                '!/restorePass': 'restorePass',
+                '!/restorePass/:id/:restorePassNum': 'restorePass'
             },
 
             login: function () {
@@ -33,6 +37,10 @@ define(['backbone',
 
             settings: function (id, emailNum) {
                 new SettingsGeneralView({postData: {id: id, emailNum: emailNum}});
+            },
+
+            restorePass: function (id, restorePassNum) {
+                new RestorePassGeneralView({postData: {id: id, restorePassNum: restorePassNum}});
             }
         });
         return Router;

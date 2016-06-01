@@ -6926,17 +6926,15 @@ button.close {
   display: table-cell;
   vertical-align: middle;
 }
-
 .local-waiter {
   width: 100%;
   height: 100%;
   text-align: center;
   position: absolute;
   display: inline-block;
-  padding: 0 15px 20px 15px;
-  margin: 0 -15px -20px -15px;
+  padding: 0 15px 0 15px;
+  margin: 0 -15px 0 -15px;
 }
-
 .local-waiter-field {
   width: 100%;
   height: 100%;
@@ -6944,12 +6942,10 @@ button.close {
   text-align: center;
   background-color: rgba(255, 255, 255, 0.5);
 }
-
 .local-waiter-el {
   display: table-cell;
   vertical-align: middle;
 }
-
 .local-waiter-img {
   width: 35px;
   height: auto;

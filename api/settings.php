@@ -21,6 +21,7 @@ $changePassNew = isset($data['changePassNew']) ? $data['changePassNew'] : "";
 $confirmDelete = isset($data['confirmDelete']) ? $data['confirmDelete'] : "";
 $passForDelete = isset($data['passForDelete']) ? $data['passForDelete'] : "";
 $emailNum = isset($data['emailNum']) ? $data['emailNum'] : "";
+$fromSocialNet = isset($data['fromSocialNet']) ? $data['fromSocialNet'] : "";
 
 if ($id != "" && $emailNum != "") {
     $query = "SELECT name, new_email FROM sn_user WHERE user_id = $id AND emailNum= $emailNum";
@@ -50,8 +51,8 @@ mysqli_close($dbc);
 
 $firstRowFromDb = mysqli_fetch_array($result);
 $nameForOutput = ($firstRowFromDb['name'] != "") ? $firstRowFromDb['name'] : $firstRowFromDb['login'];
-$fromSocialNet = (isset($firstRowFromDb['vk_user_id'])) ? true : false;
-$finishString = '{"name": "' . $firstRowFromDb['name'] . '", "email": "' . $firstRowFromDb['email'] . '", "storedParameter": "", "photo_rec": "' . $firstRowFromDb['photo_rec'] . '", "fromSocialNet":  . $fromSocialNet . }';
+$fromSocialNet = (isset($firstRowFromDb['vk_user_id'])) ? "true" : "false";
+$finishString = '{"name": "' . $firstRowFromDb['name'] . '", "email": "' . $firstRowFromDb['email'] . '", "storedParameter": "", "photo_rec": "' . $firstRowFromDb['photo_rec'] . '", "fromSocialNet": ' . $fromSocialNet . '}';
 
 switch ($storedParameter) {
     case "name":
@@ -131,7 +132,7 @@ switch ($storedParameter) {
         }
         break;
     case "delete":
-        if ($fromSocialNet) {
+        if ($fromSocialNet == "true") {
             deleteUser($sn_user_id);
             echo '{"delete": true}';
         } else {
