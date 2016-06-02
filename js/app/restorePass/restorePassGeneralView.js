@@ -1,5 +1,5 @@
 define(['backbone',
-        'text!templates/settings/settingsGeneralTemplate.html',
+        'text!templates/restorePass/restorePassGeneralTemplate.html',
         'app/simpAlert/simpAlertView',
         'app/simpAlert/simpAlertModel',
         'app/restorePass/restorePassHeaderView',
