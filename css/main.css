@@ -6986,6 +6986,13 @@ button.close {
 .todo-checkbox:checked + label .not-ready {
   display: none;
 }
+.panel-default > .panel-heading.m-setting-heading {
+  padding: 0;
+}
+.m-setting-collapsed {
+  display: block;
+  padding: 10px 15px;
+}
 .bottom-border {
   border-bottom: 1px solid #e7e7e7;
 }
