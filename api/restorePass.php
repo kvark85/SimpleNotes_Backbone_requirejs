@@ -3,6 +3,7 @@
 require_once('startsession.php');
 require_once('appvars.php');
 require_once('connectvars.php');
+require_once('functions.php');
 
 $request_body = file_get_contents('php://input');
 $data = json_decode($request_body, true);
@@ -14,9 +15,7 @@ $loginOrEmail = isset($data['loginOrEmail']) ? $data['loginOrEmail'] : "";
 
 if ($id !== "" && $restorePassNum !== "" && $changePass !== "") {
     $query = "UPDATE sn_user SET password = sha('$changePass') WHERE user_id  = $id";
-    $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Error: no connect without NySQL-server');
-    $result = mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"');
-    mysqli_close($dbc);
+    $result = sqlAaction($query);
 
     echo '{"needWalidate": false, "login": "' . $login . '", "step": 4, "message": {"type": "success", "textAlert": "Пароль успешно изменен."}}';
     exit;
@@ -24,9 +23,7 @@ if ($id !== "" && $restorePassNum !== "" && $changePass !== "") {
 
 if ($loginOrEmail !== "") {
     $query = "SELECT * FROM sn_user WHERE login = '$loginOrEmail' OR email= '$loginOrEmail'";
-    $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Error: no connect without NySQL-server');
-    $result = mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"');
-    mysqli_close($dbc);
+    $result = sqlAaction($query);
 
     if (mysqli_num_rows($result) != 0) {
         $row = mysqli_fetch_array($result);
@@ -35,9 +32,7 @@ if ($loginOrEmail !== "") {
         $restorePassNum = (string)mt_rand();
 
         $query = "UPDATE sn_user SET restorePassNum = $restorePassNum WHERE user_id = $sn_user_id";
-        $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Error: no connect without NySQL-server');
-        mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"');
-        mysqli_close($dbc);
+        sqlAaction($query);
 
         $subject = "Восатновление пароля Simple Notes";
         $message = "
@@ -54,8 +49,7 @@ if ($loginOrEmail !== "") {
                     </body>
                 </html>
                 ";
-        $headers = "MIME-Version: 1.0" . "\r\n" . "Content-type: text/html; charset=utf-8-1" . "\r\n";
-        $resultMail = mail($email, $subject, $message, $headers);
+        $resultMail = snMail($email, $subject, $message);
         if ($resultMail == false) {
             echo '{"needWalidate": false, "loginOrEmail": "' . $loginOrEmail . '", "step": 1,
             "message": {"type": "warning", "textAlert": "При отправке электронной почты, для восстановления пароля, что-то пошло не так."}}';
@@ -71,9 +65,7 @@ if ($loginOrEmail !== "") {
 
 if ($id !== "" && $restorePassNum !== "") {
     $query = "SELECT * FROM sn_user WHERE user_id = '$id'";
-    $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Error: no connect without NySQL-server');
-    $result = mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"');
-    mysqli_close($dbc);
+    $result = sqlAaction($query);
 
     if (mysqli_num_rows($result) != 0) {
         $row = mysqli_fetch_array($result);

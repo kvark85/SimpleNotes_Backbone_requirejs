@@ -2,6 +2,7 @@
 require_once('startsession.php');
 require_once('appvars.php');
 require_once('connectvars.php');
+require_once('functions.php');
 
 $sn_user_id = isset($_SESSION['sn_user_id']) ? $_SESSION['sn_user_id'] : "";
 
@@ -25,16 +26,12 @@ $fromSocialNet = isset($data['fromSocialNet']) ? $data['fromSocialNet'] : "";
 
 if ($id != "" && $emailNum != "") {
     $query = "SELECT name, new_email FROM sn_user WHERE user_id = $id AND emailNum= $emailNum";
-    $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Error: no connect without NySQL-server');
-    $result = mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"');
-    mysqli_close($dbc);
+    $result = sqlAaction($query);
     if (mysqli_num_rows($result) != 0) {
         $row = mysqli_fetch_array($result);
 
         $query = "UPDATE sn_user SET email = '" . $row['new_email'] . "', new_email = '', emailNum = '0' WHERE user_id = " . $id;
-        $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Error: no connect without NySQL-server');
-        $result = mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"');
-        mysqli_close($dbc);
+        $result = sqlAaction($query);
 
         $_SESSION['sn_user_id'] = $id;
         echo '{"storedParameter": "' . $storedParameter . '", "needWalidate": false, "name": "' . $row['name'] . '", "email": "' . $row['new_email'] . '", "newName": "",
@@ -45,9 +42,7 @@ if ($id != "" && $emailNum != "") {
 }
 
 $query = "SELECT password, name, login, email, photo_rec, vk_user_id FROM sn_user WHERE user_id = '$sn_user_id'";
-$dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Error: no connect without NySQL-server');
-$result = mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"');
-mysqli_close($dbc);
+$result = sqlAaction($query);
 
 $firstRowFromDb = mysqli_fetch_array($result);
 $nameForOutput = ($firstRowFromDb['name'] != "") ? $firstRowFromDb['name'] : $firstRowFromDb['login'];
@@ -57,9 +52,7 @@ $finishString = '{"name": "' . $firstRowFromDb['name'] . '", "email": "' . $firs
 switch ($storedParameter) {
     case "name":
         $query = "UPDATE sn_user SET name = '$newName' WHERE user_id = '$sn_user_id'";
-        $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Error: no connect without NySQL-server');
-        $result = mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"');
-        mysqli_close($dbc);
+        $result = sqlAaction($query);
         echo '{
         "storedParameter": "' . $storedParameter . '", "needWalidate": false, "name": "' . $newName . '", "newName": "", "newEmail": "",
         "changePassOld": "", "changePassNew": "", "confirmChangePassNew": "", "confirmDelete": "", "passForDelete": "",
@@ -69,8 +62,7 @@ switch ($storedParameter) {
         $emailNum = (string)mt_rand();
 
         $query = "SELECT user_id FROM sn_user WHERE email = '$newEmail'";
-        $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Error: no connect without NySQL-server');
-        $result = mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"');
+        $result = sqlAaction($query);
         if (mysqli_num_rows($result) != 0) {
             echo '{
                 "storedParameter": "' . $storedParameter . '", "needWalidate": false, "name": "' . $firstRowFromDb['name'] . '", "newName": "",
@@ -79,11 +71,8 @@ switch ($storedParameter) {
             exit;
         }
 
-
         $query = "UPDATE sn_user SET new_email = '$newEmail', emailNum = '$emailNum' WHERE user_id = '$sn_user_id'";
-        $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Error: no connect without NySQL-server');
-        $result = mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"');
-        mysqli_close($dbc);
+        $result = sqlAaction($query);
 
         $subject = "Запрос на смену E-mail на сервисе SimpleNotes";
         $message = "
@@ -100,8 +89,7 @@ switch ($storedParameter) {
                 </body>
             </html>
             ";
-        $headers = "MIME-Version: 1.0" . "\r\n" . "Content-type: text/html; charset=utf-8-1" . "\r\n";
-        $resultMail = mail($newEmail, $subject, $message, $headers);
+        $resultMail = snMail($email, $subject, $message);
         if ($resultMail == false) {
             echo '{
                 "storedParameter": "' . $storedParameter . '", "needWalidate": false, "name": "' . $firstRowFromDb['name'] . '", "newName": "",
@@ -117,9 +105,7 @@ switch ($storedParameter) {
     case "password":
         if (sha1($changePassOldl) == $firstRowFromDb['password']) {
             $query = "UPDATE sn_user SET password = sha('$changePassNew') WHERE user_id  = $sn_user_id";
-            $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Error: no connect without NySQL-server');
-            $result = mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"');
-            mysqli_close($dbc);
+            sqlAaction($query);
             echo '{
                 "storedParameter": "' . $storedParameter . '", "needWalidate": false, "name": "' . $firstRowFromDb['name'] . '", "newName": "",
                 "newEmail": "", "changePassOld": "", "changePassNew": "", "confirmChangePassNew": "", "confirmDelete": "", "passForDelete": "",
@@ -155,12 +141,9 @@ switch ($storedParameter) {
 function deleteUser($userId)
 {
     $query = "DELETE FROM sn_todo  WHERE user_id = $userId";
-    $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Error: no connect without NySQL-server');
-    $result = mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"');
+    sqlAaction($query);
     $query = "DELETE FROM sn_user  WHERE user_id = $userId";
-    $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Error: no connect without NySQL-server');
-    $result = mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"');
-    mysqli_close($dbc);
+    sqlAaction($query);
 
     setcookie('sn_user_id', '', time() - 3600);
     unset($_SESSION['sn_user_id']);

@@ -1,6 +1,7 @@
 <?php
 require_once('startsession.php');
 require_once('connectvars.php');
+require_once('functions.php');
 
 $sn_user_id = isset($_SESSION['sn_user_id']) ? $_SESSION['sn_user_id'] : "";
 
@@ -17,9 +18,7 @@ if ( $sn_user_id != "" ) {
     $query = "SELECT * FROM sn_user WHERE login = '$sn_login' and password = sha('$password')";
 }
 
-$dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Error: no connect without MySQL-server');
-$result = mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"');
-mysqli_close($dbc);
+$result = sqlAaction($query);
 
 if( mysqli_num_rows($result) == 1 ) {
     $user_id = mysqli_fetch_array($result)['user_id'];
@@ -30,15 +29,12 @@ if( mysqli_num_rows($result) == 1 ) {
     echo '{"acces": "Ok"}';
     //прибавляем к счетчику входов единицу и обновляем дату последнего входа
     $query = "SELECT counter_visit FROM sn_user WHERE user_id = $user_id";
-    $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Error: no connect without MySQL-server');
-    $result = mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"');
+    $result = sqlAaction($query);
     $rowFromDb = mysqli_fetch_array($result);
     $currentCounterVisit = $rowFromDb['counter_visit'] + 1;
 
     $query = "UPDATE sn_user SET last_visit_date = CURDATE(), counter_visit = $currentCounterVisit WHERE user_id = '$user_id'";
-    $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Error: no connect without MySQL-server');
-    $result = mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"');
-    mysqli_close($dbc);
+    sqlAaction($query);
 } else {
     header('HTTP/1.0 401 Unauthorized');
 }
