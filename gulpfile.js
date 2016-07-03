@@ -1,6 +1,13 @@
-var gulp = require('gulp');
-var less = require('gulp-less');
-var path = require('path');
+function onLessError(err) {
+    'use strict';
+    console.log('!!! Less ERROR !!!', err);
+    this.emit('end');
+}
+
+var gulp = require('gulp'),
+    less = require('gulp-less'),
+    cssmin = require('gulp-cssmin'),
+    path = require('path');
 
 
 var paths = {
@@ -9,11 +16,16 @@ var paths = {
     outputCssFolder: 'css'
 };
 
+//---------- Задачи Start ----------
 gulp.task('less', function () {
     'use strict';
     return gulp.src(paths.lessMainFile)
         .pipe(less({
             paths: [ path.join(paths.lessFilesFolder, 'less', 'includes') ]
+        }))
+        .on('error', onLessError)
+        .pipe(cssmin().on('error', function (err) {
+            console.log(err);
         }))
         .on('error',  onLessError)
         .pipe(gulp.dest(paths.outputCssFolder));
@@ -24,11 +36,6 @@ gulp.task('watch', function () {
     'use strict';
     gulp.watch(paths.lessFilesFolder, ['less']);
 });
+//---------- Задачи End ----------
 
 gulp.task('default', ['watch', 'less']);
-
-function onLessError(err) {
-    'use strict';
-    console.log('!!! Less ERROR !!!', err);
-    this.emit('end');
-}

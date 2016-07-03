@@ -21,9 +21,11 @@
           </ul>
 
           <ul class="nav navbar-nav navbar-right">
+            <% if (photo_rec) { %>
             <li>
               <img class="header-avtar" src="<%- photo_rec %>" alt="">
             </li>
+            <% } %>
             <li>
               <a href="#!/settings" class="dropdown-toggle">Здравствуйте, <%- name %>.</a>
             </li>

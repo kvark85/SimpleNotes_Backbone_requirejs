@@ -89,7 +89,7 @@ switch ($storedParameter) {
                 </body>
             </html>
             ";
-        $resultMail = snMail($email, $subject, $message);
+        $resultMail = snMail($newEmail, $subject, $message);
         if ($resultMail == false) {
             echo '{
                 "storedParameter": "' . $storedParameter . '", "needWalidate": false, "name": "' . $firstRowFromDb['name'] . '", "newName": "",
