@@ -1,7 +1,11 @@
 require.config({
     baseUrl: "js/lib",
     paths: {
-        jquery: 'jquery-2.1.4',
+        jquery: 'jquery/dist/jquery.min',
+        text: 'text/text',
+        underscore: 'underscore/underscore-min',
+        backbone: 'backbone/backbone-min',
+        bootstrap: 'bootstrap/dist/js/bootstrap.min',
         app: '../app',
         templates: '../../../templates'
     },
