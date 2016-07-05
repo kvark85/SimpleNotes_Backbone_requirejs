@@ -9,6 +9,7 @@
     optimizeCss: 'standard',
     removeCombined: true,
     paths: {
+        main: 'js/app/main',
         jquery: 'js/lib/jquery/dist/jquery.min',
         text: 'js/lib/text/text',
         underscore: 'js/lib/underscore/underscore-min',
