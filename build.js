@@ -1,20 +1,23 @@
 ({
-    dir: 'dist',
+    appDir: './',
+    baseUrl: './js',
+    dir: './dist',
     modules: [
         {
-            name: 'app'
+            name: 'app/main'
         }
     ],
-    fileExclusionRegExp: /^(r|build)\.js$/,
+    fileExclusionRegExp: /^(r|build)\.js|node_modules$|SQL_backup|\.git|\.idea|less|package\.json|gulpfile\.js|bower\.json|\.bowerrc/,
     optimizeCss: 'standard',
     removeCombined: true,
     paths: {
-        main: 'js/app/main',
-        jquery: 'js/lib/jquery/dist/jquery.min',
-        text: 'js/lib/text/text',
-        underscore: 'js/lib/underscore/underscore-min',
-        backbone: 'js/lib/backbone/backbone-min',
-        bootstrap: 'js/lib/bootstrap/dist/js/bootstrap.min'
+        jquery: 'lib/jquery/dist/jquery.min',
+        underscore: 'lib/underscore/underscore-min',
+        backbone: 'lib/backbone/backbone-min',
+        text: 'lib/text/text',
+
+
+        bootstrap: 'lib/bootstrap/dist/js/bootstrap.min'
     },
     shim: {
         'backbone': {
