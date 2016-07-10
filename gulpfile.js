@@ -6,7 +6,7 @@ function onLessError(err) {
 
 var gulp = require('gulp'),
     less = require('gulp-less'),
-    cssmin = require('gulp-cssmin'),
+//cssmin = require('gulp-cssmin'), // способ минификации 1
     path = require('path');
 
 
@@ -21,13 +21,13 @@ gulp.task('less', function () {
     'use strict';
     return gulp.src(paths.lessMainFile)
         .pipe(less({
-            paths: [ path.join(paths.lessFilesFolder, 'less', 'includes') ]
+            paths: [path.join(paths.lessFilesFolder, 'less', 'includes')],
+            compress: true // способ минификации 2
         }))
         .on('error', onLessError)
-        .pipe(cssmin().on('error', function (err) {
-            console.log(err);
-        }))
-        .on('error',  onLessError)
+        //.pipe(cssmin().on('error', function (err) { // способ минификации 1
+        //    console.log(err);
+        //}))
         .pipe(gulp.dest(paths.outputCssFolder));
 });
 
