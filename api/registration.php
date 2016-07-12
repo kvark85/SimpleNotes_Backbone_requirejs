@@ -54,26 +54,53 @@ if ($id == "" && $regNum == "" && $login != "" && $email != "") {
     $query = "SELECT * FROM sn_user WHERE login = '$login'";
     $result = sqlAaction($query);
     if (mysqli_num_rows($result) > 0) {
-        echo '{"message": {"type": "warning", "textAlert": "Пользователь с таким логином уже зарегистрирован."}}';
-        exit;
+        $row = mysqli_fetch_array($result);
+        if (!(isset($row['regNum']) && $row['regNum'] != "")) {
+            echo '{"message": {"type": "warning", "textAlert": "Пользователь с таким логином уже зарегистрирован."}}';
+            exit;
+        }
     }
 
     $query = "SELECT * FROM sn_user WHERE email = '$email'";
     $result = sqlAaction($query);
     if (mysqli_num_rows($result) > 0) {
-        echo '{"message": {"type": "warning", "textAlert": "Пользователь с такой электронной почтой уже зарегистрирован."}}';
-        exit;
+        $row = mysqli_fetch_array($result);
+        if (!(isset($row['regNum']) && $row['regNum'] != "")) {
+            echo '{"message": {"type": "warning", "textAlert": "Пользователь с такой электронной почтой уже зарегистрирован."}}';
+            exit;
+        }
     }
 
+    $query = "SELECT * FROM sn_user WHERE email = '$email'";
+    $result = sqlAaction($query);
     $regNum = (string)mt_rand();
-    if ($name == "") {
-        $query = "INSERT INTO sn_user(login, email, regNum) VALUES ('$login', '$email', '$regNum')"; //пользователь не ввел имя
+    if (mysqli_num_rows($result) > 0) {
+        $row = mysqli_fetch_array($result);
+        if (isset($row['user_id'])) {
+            $user_id = $row['user_id'];
+            // если раньше с таким email уже пробловали залогиниться
+            if ($name == "") {
+                $query = "UPDATE sn_user SET login = '$login', email = '$email', regNum = '$regNum' WHERE user_id = $user_id"; //пользователь не ввел имя
+            } else {
+                $query = "UPDATE sn_user SET login = '$login', name = '$name', email = '$email', regNum = '$regNum' WHERE user_id = $user_id"; //пользователь ввел и имя
+            }
+        }
     } else {
-        $query = "INSERT INTO sn_user(login, name, email, regNum) VALUES ('$login', '$name', '$email', '$regNum')"; //пользователь ввел и имя
+        // если с таким email логинятся в первый раз
+        if ($name == "") {
+            $query = "INSERT INTO sn_user(login, email, regNum) VALUES ('$login', '$email', '$regNum')"; //пользователь не ввел имя
+        } else {
+            $query = "INSERT INTO sn_user(login, name, email, regNum) VALUES ('$login', '$name', '$email', '$regNum')"; //пользователь ввел и имя
+        }
     }
+
     $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Error: no connect without NySQL-server');
     if (mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"')) {
         $last_id = mysqli_insert_id($dbc);
+    }
+
+    if(isset($user_id)) {
+        $last_id = $user_id;
     }
 
     $subject = "Подтверждения электронного адресса на сервисе SimpleNotes";
