@@ -15,8 +15,6 @@
         underscore: 'lib/underscore/underscore-min',
         backbone: 'lib/backbone/backbone-min',
         text: 'lib/text/text',
-
-
         bootstrap: 'lib/bootstrap/dist/js/bootstrap.min'
     },
     shim: {
