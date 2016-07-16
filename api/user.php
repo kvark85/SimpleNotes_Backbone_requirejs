@@ -11,7 +11,7 @@ if ( $sn_user_id == "" ) {
 }
 
 $query = "SELECT * FROM sn_user WHERE user_id = '$sn_user_id'";
-$result = sqlAaction($query);
+$result = sqlAction($query);
 
 $rowFromDb = mysqli_fetch_array($result);
 $nameForOutput = ($rowFromDb['name'] != "") ? $rowFromDb['name'] : $rowFromDb['login'];

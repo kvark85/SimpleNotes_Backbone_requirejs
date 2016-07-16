@@ -26,12 +26,12 @@ $fromSocialNet = isset($data['fromSocialNet']) ? $data['fromSocialNet'] : "";
 
 if ($id != "" && $emailNum != "") {
     $query = "SELECT name, new_email FROM sn_user WHERE user_id = $id AND emailNum= $emailNum";
-    $result = sqlAaction($query);
+    $result = sqlAction($query);
     if (mysqli_num_rows($result) != 0) {
         $row = mysqli_fetch_array($result);
 
         $query = "UPDATE sn_user SET email = '" . $row['new_email'] . "', new_email = '', emailNum = '0' WHERE user_id = " . $id;
-        $result = sqlAaction($query);
+        $result = sqlAction($query);
 
         $_SESSION['sn_user_id'] = $id;
         echo '{"storedParameter": "' . $storedParameter . '", "needWalidate": false, "name": "' . $row['name'] . '", "email": "' . $row['new_email'] . '", "newName": "",
@@ -42,7 +42,7 @@ if ($id != "" && $emailNum != "") {
 }
 
 $query = "SELECT password, name, login, email, photo_rec, vk_user_id FROM sn_user WHERE user_id = '$sn_user_id'";
-$result = sqlAaction($query);
+$result = sqlAction($query);
 
 $firstRowFromDb = mysqli_fetch_array($result);
 $nameForOutput = ($firstRowFromDb['name'] != "") ? $firstRowFromDb['name'] : $firstRowFromDb['login'];
@@ -52,7 +52,7 @@ $finishString = '{"name": "' . $firstRowFromDb['name'] . '", "email": "' . $firs
 switch ($storedParameter) {
     case "name":
         $query = "UPDATE sn_user SET name = '$newName' WHERE user_id = '$sn_user_id'";
-        $result = sqlAaction($query);
+        $result = sqlAction($query);
         echo '{
         "storedParameter": "' . $storedParameter . '", "needWalidate": false, "name": "' . $newName . '", "newName": "", "newEmail": "",
         "changePassOld": "", "changePassNew": "", "confirmChangePassNew": "", "confirmDelete": "", "passForDelete": "",
@@ -62,7 +62,7 @@ switch ($storedParameter) {
         $emailNum = (string)mt_rand();
 
         $query = "SELECT user_id FROM sn_user WHERE email = '$newEmail'";
-        $result = sqlAaction($query);
+        $result = sqlAction($query);
         if (mysqli_num_rows($result) != 0) {
             echo '{
                 "storedParameter": "' . $storedParameter . '", "needWalidate": false, "name": "' . $firstRowFromDb['name'] . '", "newName": "",
@@ -72,7 +72,7 @@ switch ($storedParameter) {
         }
 
         $query = "UPDATE sn_user SET new_email = '$newEmail', emailNum = '$emailNum' WHERE user_id = '$sn_user_id'";
-        $result = sqlAaction($query);
+        $result = sqlAction($query);
 
         $subject = "Запрос на смену E-mail на сервисе SimpleNotes";
         $message = "
@@ -105,7 +105,7 @@ switch ($storedParameter) {
     case "password":
         if (sha1($changePassOldl) == $firstRowFromDb['password']) {
             $query = "UPDATE sn_user SET password = sha('$changePassNew') WHERE user_id  = $sn_user_id";
-            sqlAaction($query);
+            sqlAction($query);
             echo '{
                 "storedParameter": "' . $storedParameter . '", "needWalidate": false, "name": "' . $firstRowFromDb['name'] . '", "newName": "",
                 "newEmail": "", "changePassOld": "", "changePassNew": "", "confirmChangePassNew": "", "confirmDelete": "", "passForDelete": "",
@@ -141,9 +141,9 @@ switch ($storedParameter) {
 function deleteUser($userId)
 {
     $query = "DELETE FROM sn_todo  WHERE user_id = $userId";
-    sqlAaction($query);
+    sqlAction($query);
     $query = "DELETE FROM sn_user  WHERE user_id = $userId";
-    sqlAaction($query);
+    sqlAction($query);
 
     setcookie('sn_user_id', '', time() - 3600);
     unset($_SESSION['sn_user_id']);

@@ -18,7 +18,7 @@ if ( $sn_user_id != "" ) {
     $query = "SELECT * FROM sn_user WHERE login = '$sn_login' and password = sha('$password')";
 }
 
-$result = sqlAaction($query);
+$result = sqlAction($query);
 
 if( mysqli_num_rows($result) == 1 ) {
     $user_id = mysqli_fetch_array($result)['user_id'];
@@ -29,12 +29,12 @@ if( mysqli_num_rows($result) == 1 ) {
     echo '{"acces": "Ok"}';
     //прибавляем к счетчику входов единицу и обновляем дату последнего входа
     $query = "SELECT counter_visit FROM sn_user WHERE user_id = $user_id";
-    $result = sqlAaction($query);
+    $result = sqlAction($query);
     $rowFromDb = mysqli_fetch_array($result);
     $currentCounterVisit = $rowFromDb['counter_visit'] + 1;
 
     $query = "UPDATE sn_user SET last_visit_date = CURDATE(), counter_visit = $currentCounterVisit WHERE user_id = '$user_id'";
-    sqlAaction($query);
+    sqlAction($query);
 } else {
     header('HTTP/1.0 401 Unauthorized');
 }

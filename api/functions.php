@@ -5,7 +5,7 @@ function snMail($email, $subject, $message)
     return mail($email, $subject, $message, $headers);
 }
 
-function sqlAaction($query)
+function sqlAction($query)
 {
     $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ('Error: no connect without MySQL-server');
     $result = mysqli_query($dbc, $query) or die ('Error on step "mysqli_query"');

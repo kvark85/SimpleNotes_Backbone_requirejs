@@ -14,13 +14,13 @@ if ($hash == md5(APIID . $uid . SECRETKEY)) {
     unset($_SESSION['sn_user_id']); // отчищаем id в сессии
 
     $query = "SELECT user_id FROM sn_user WHERE vk_user_id = '$uid'";
-    $result = sqlAaction($query);
+    $result = sqlAction($query);
 
     if (mysqli_num_rows($result)) { //пользователь авторизован, просто пересоздадим куки
         $row = mysqli_fetch_array($result);
 
         $query = "UPDATE sn_user SET name = '$first_name', photo_rec = '$photo_rec' WHERE vk_user_id =  '$uid' LIMIT 1";
-        $result = sqlAaction($query);
+        $result = sqlAction($query);
 
         $_SESSION['sn_user_id'] = $row['user_id'];
         setcookie('sn_user_id', $row['user_id'], time() + (60 * 60 * 24 * 1));
@@ -52,7 +52,7 @@ $regNum = isset($data['regNum']) ? $data['regNum'] : "";
 
 if ($id == "" && $regNum == "" && $login != "" && $email != "") {
     $query = "SELECT * FROM sn_user WHERE login = '$login'";
-    $result = sqlAaction($query);
+    $result = sqlAction($query);
     if (mysqli_num_rows($result) > 0) {
         $row = mysqli_fetch_array($result);
         if (!(isset($row['regNum']) && $row['regNum'] != "")) {
@@ -62,7 +62,7 @@ if ($id == "" && $regNum == "" && $login != "" && $email != "") {
     }
 
     $query = "SELECT * FROM sn_user WHERE email = '$email'";
-    $result = sqlAaction($query);
+    $result = sqlAction($query);
     if (mysqli_num_rows($result) > 0) {
         $row = mysqli_fetch_array($result);
         if (!(isset($row['regNum']) && $row['regNum'] != "")) {
@@ -72,7 +72,7 @@ if ($id == "" && $regNum == "" && $login != "" && $email != "") {
     }
 
     $query = "SELECT * FROM sn_user WHERE email = '$email'";
-    $result = sqlAaction($query);
+    $result = sqlAction($query);
     $regNum = (string)mt_rand();
     if (mysqli_num_rows($result) > 0) {
         $row = mysqli_fetch_array($result);
@@ -130,7 +130,7 @@ if ($id == "" && $regNum == "" && $login != "" && $email != "") {
 
 if ($id != "" && $regNum != "") {
     $query = "SELECT * FROM sn_user WHERE user_id = $id AND regNum= $regNum";
-    $result = sqlAaction($query);
+    $result = sqlAction($query);
     if (mysqli_num_rows($result) != 0) {
         $row = mysqli_fetch_array($result);
         echo '{"id": ' . $row['user_id'] . ', "login": "' . $row['login'] . '", "name": "' . $row['name'] . '",
@@ -144,7 +144,7 @@ if ($id != "" && $regNum != "") {
 
 if ($step == 4) {
     $query = "UPDATE sn_user SET regNum = '', password = sha('$password'), registration_date = CURDATE() WHERE user_id  = $id";
-    sqlAaction($query);
+    sqlAction($query);
     echo '{"step": 5, "message": {"type": "success", "textAlert": "Регистрация прошла успешно. Залогинтесь и пользуйтесь сервисом с удовольствием."}}';
     exit;
 }

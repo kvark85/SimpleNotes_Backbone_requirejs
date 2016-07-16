@@ -15,7 +15,7 @@ $loginOrEmail = isset($data['loginOrEmail']) ? $data['loginOrEmail'] : "";
 
 if ($id !== "" && $restorePassNum !== "" && $changePass !== "") {
     $query = "UPDATE sn_user SET password = sha('$changePass') WHERE user_id  = $id";
-    $result = sqlAaction($query);
+    $result = sqlAction($query);
 
     echo '{"needWalidate": false, "login": "' . $login . '", "step": 4, "message": {"type": "success", "textAlert": "Пароль успешно изменен."}}';
     exit;
@@ -23,7 +23,7 @@ if ($id !== "" && $restorePassNum !== "" && $changePass !== "") {
 
 if ($loginOrEmail !== "") {
     $query = "SELECT * FROM sn_user WHERE login = '$loginOrEmail' OR email= '$loginOrEmail'";
-    $result = sqlAaction($query);
+    $result = sqlAction($query);
 
     if (mysqli_num_rows($result) != 0) {
         $row = mysqli_fetch_array($result);
@@ -32,7 +32,7 @@ if ($loginOrEmail !== "") {
         $restorePassNum = (string)mt_rand();
 
         $query = "UPDATE sn_user SET restorePassNum = $restorePassNum WHERE user_id = $sn_user_id";
-        sqlAaction($query);
+        sqlAction($query);
 
         $subject = "Восатновление пароля Simple Notes";
         $message = "
@@ -65,7 +65,7 @@ if ($loginOrEmail !== "") {
 
 if ($id !== "" && $restorePassNum !== "") {
     $query = "SELECT * FROM sn_user WHERE user_id = '$id'";
-    $result = sqlAaction($query);
+    $result = sqlAction($query);
 
     if (mysqli_num_rows($result) != 0) {
         $row = mysqli_fetch_array($result);

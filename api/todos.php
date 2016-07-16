@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] == "PUT" && preg_match( "/\d+$/", $requestUri, $m
     $idFromUrl = $matches[0];
 
     $query = "UPDATE sn_todo SET title = '$todo',completed = '$intCompleted' WHERE todo_id = $idFromUrl";
-    $result = sqlAaction($query);
+    $result = sqlAction($query);
 
     echo '{"id": "' . $idFromUrl . '", "todo": "' . $todo . '","completed": ' . $completed . '}';
     exit;
@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] == "PUT" && preg_match( "/\d+$/", $requestUri, $m
     $idFromUrl = $matches[0];
 
     $query = "DELETE FROM sn_todo  WHERE todo_id = $idFromUrl";
-    $result = sqlAaction($query);
+    $result = sqlAction($query);
 
     echo '{"id": "", "todo": "","completed": ""}';
     exit;
@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] == "PUT" && preg_match( "/\d+$/", $requestUri, $m
 } else if ($_SERVER['REQUEST_METHOD'] == "GET")
 {
     $query = "SELECT * FROM sn_user LEFT OUTER JOIN sn_todo using(user_id) WHERE user_id = '$sn_user_id' ORDER BY todo_id ASC";
-    $result = sqlAaction($query);
+    $result = sqlAction($query);
 
     $strResponse = "[";
     while ($row = mysqli_fetch_array($result)) {
