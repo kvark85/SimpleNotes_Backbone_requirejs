@@ -1,5 +1,5 @@
-﻿<div class="row js-one-todo">
-  <div class="col-xs-3 text-center todo-ison">
+﻿<div class="js-one-todo m-display-flex">
+  <div class="text-center todo-ison">
     <input id="todo_<%- id %>"  type="checkbox" class="js-status-checkbox todo-checkbox" <%= (completed) ? 'checked="checked"' : '' %> />
 
     <label for="todo_<%- id %>">
@@ -8,12 +8,12 @@
     </label>
   </div>
 
-  <div class="col-xs-10">
+  <div class="todo-content">
     <span class="note-show js-note"><%- todo %></span>
     <span><input class="form-control note-edit js-change-input" type="text"></span>
   </div>
 
-  <div class="col-xs-3 text-center todo-ison">
+  <div class="text-center todo-ison">
     <button class="js-delete-button button-img note-show"><i class="glyphicon glyphicon-trash"></i></button>
     <button class="button-img note-edit js-note-edit"><i class="glyphicon glyphicon-floppy-disk"></i></button>
   </div>
