@@ -1,5 +1,5 @@
 define(['backbone',
-        'text!templates/registration/registrationGeneralTemplate.html',
+        'text!templates/registration/registrationFieldTemplate.html',
         'app/registration/registrationHeaderView',
         'app/registration/registrationContentView',
         'app/registration/registrationUserModel'],

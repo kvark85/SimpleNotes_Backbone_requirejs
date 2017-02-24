@@ -1,5 +1,5 @@
 define(['backbone',
-        'text!templates/todo/todoGeneralTemplate.html',
+        'text!templates/todo/todoFieldTemplate.html',
         'app/todo/header/todoHeaderView',
         'app/todo/todoContentView',
         'app/todo/header/todoUserModel',

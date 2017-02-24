@@ -1,5 +1,5 @@
 define(['backbone',
-        'text!templates/login/loginGeneralTemplate.html',
+        'text!templates/login/loginFieldTemplate.html',
         'app/login/loginHeaderView',
         'app/login/loginContentView',
         'app/login/loginUserModel'],

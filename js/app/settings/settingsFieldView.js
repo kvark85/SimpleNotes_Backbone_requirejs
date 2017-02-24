@@ -1,5 +1,5 @@
 define(['backbone',
-        'text!templates/settings/settingsGeneralTemplate.html',
+        'text!templates/settings/settingsFieldTemplate.html',
         'app/simpAlert/simpAlertView',
         'app/simpAlert/simpAlertModel',
         'app/settings/settingsHeaderView',
