@@ -1,43 +1,23 @@
 define(['backbone',
+        'text!templates/todo/todoFieldTemplate.html',
         'app/todo/header/todoHeaderView',
         'app/todo/todoContentView',
         'app/todo/header/todoUserModel',
         'app/todo/todoListCollection'],
     function (Backbone,
+             template,
              TodoHeaderView,
              TodoContentView,
              TodoUserModel,
              TodoListCollection) {
         'use strict';
         var View = Backbone.View.extend({
-            el: '#content',
+            el: '#mainContetn',
 
             initialize: function () {
-                alert('init todo field');
-                this.todoUserModel = new TodoUserModel(); // create Users object (model)
-                this.todoListCollection = new TodoListCollection(); // create collections object (collection)
-                //this.render();
-                //this.todoUserModel.fetch({
-                //    success: function () {
-                //        this.header.render();
-                //    }.bind(this),
-                //    error: function () {
-                //        location.href = '';
-                //    }
-                //});
-                //this.todoListCollection.fetch({
-                //    error: function () {
-                //        location.href = '';
-                //    }
-                //});
-            },
-
-            render: function () {
-                alert('field render');
-                //this.$el.html(this.template());
-                //this.header = new TodoHeaderView({model: this.todoUserModel});
-                //this.content = new TodoContentView({collection: this.todoListCollection});
-                //return this;
+                this.$el.html(template); // insert html (render)
+                new TodoHeaderView({model: new TodoUserModel()}); // creating header
+                new TodoContentView({collection: new TodoListCollection()}); // creating content
             }
         });
         return View;

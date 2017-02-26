@@ -13,8 +13,9 @@ define(['backbone',
                 'dblclick .js-one-todo': 'edit',
                 'click .js-delete-button': 'clear',
                 'keypress .js-change-input': 'editTextTodoFromKeypress',
-                'blur .js-change-input': 'cancelEdit',
-                'click .js-note-edit': 'close'
+                'keydown .js-change-input': 'revertOnEscape',
+                'click .js-note-edit': 'close',
+                'blur .js-change-input': 'cancelEdit'
             },
 
             initialize: function () {
@@ -25,7 +26,7 @@ define(['backbone',
             render: function () {
                 this.$el.toggleClass('list-group-item-success', this.model.get('completed'));
                 this.$el.html(this.template(this.model.toJSON()));
-                this.input = this.$('.js-change-input');
+                this.$input = this.$('.js-change-input');
                 return this;
             },
 
@@ -40,7 +41,7 @@ define(['backbone',
             },
 
             close: function () {
-                var value = this.input.val();
+                var value = this.$input.val();
                 if (!value) {
                     this.clear();
                 } else {
@@ -50,9 +51,15 @@ define(['backbone',
             },
 
             edit: function () {
-                this.input.val(this.model.get('todo'));
+                this.$input.val(this.model.get('todo'));
                 this.$el.addClass('now-modified');
-                this.input.focus();
+                this.$input.focus();
+            },
+
+            revertOnEscape: function (e) {
+                if (e.which === 27) {
+                    this.cancelEdit();
+                }
             },
 
             cancelEdit: function () {
