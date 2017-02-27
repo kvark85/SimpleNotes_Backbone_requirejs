@@ -31,6 +31,7 @@ define(['backbone',
             },
 
             toggle: function () {
+                this.clickVisualization();
                 this.model.toggle();
             },
 
@@ -56,6 +57,13 @@ define(['backbone',
                 this.$input.focus();
             },
 
+            clickVisualization: function () {
+                this.el.classList.remove('flashClass');
+                setTimeout(function () {
+                    this.el.classList.add('flashClass');
+                }.bind(this), 0);
+            },
+
             revertOnEscape: function (e) {
                 if (e.which === 27) {
                     this.cancelEdit();
@@ -69,6 +77,7 @@ define(['backbone',
             },
 
             clear: function () {
+                this.clickVisualization();
                 this.model.destroy({'wait': true});
             }
         });
