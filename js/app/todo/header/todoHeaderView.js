@@ -10,11 +10,16 @@ define(['backbone',
             initialize: function () {
                 this.render();
                 this.listenTo(this.model, 'change', this.render);
+                this.listenTo(this.model, 'error', this.error);
                 this.model.fetch();
             },
 
             render: function () {
                 this.$el.html(this.template(this.model.toJSON()));
+            },
+
+            error: function () {
+                location.href = '';
             }
 
         });
