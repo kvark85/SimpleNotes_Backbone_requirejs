@@ -13,32 +13,11 @@ define(['backbone',
         'use strict';
         var View = Backbone.View.extend({
             el: '#mainContetn',
-            template: _.template(template),
 
             initialize: function () {
-                this.todoUserModel = new TodoUserModel();
-                this.todoListCollection = new TodoListCollection();
-                this.render();
-                this.todoUserModel.fetch({
-                    success: function () {
-                        this.header.render();
-                    }.bind(this),
-                    error: function () {
-                        location.href = '';
-                    }
-                });
-                this.todoListCollection.fetch({
-                    error: function () {
-                        location.href = '';
-                    }
-                });
-            },
-
-            render: function () {
-                this.$el.html(this.template());
-                this.header = new TodoHeaderView({model: this.todoUserModel});
-                this.content = new TodoContentView({collection: this.todoListCollection});
-                return this;
+                this.$el.html(template); // insert html (render)
+                new TodoHeaderView({model: new TodoUserModel()}); // creating header
+                new TodoContentView({collection: new TodoListCollection()}); // creating content
             }
         });
         return View;
