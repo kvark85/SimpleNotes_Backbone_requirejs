@@ -20,19 +20,18 @@ define(['backbone',
             },
 
             initialize: function () {
-                this.render();
-                this.listenTo(this.model, 'change', function () {
-                    this.render();
-                }.bind(this));
-                this.listenTo(this.model, 'change:delete', function () {
-                    if (this.model.get('delete')) {
-                        location.href = '';
-                    }
-                }.bind(this));
+                this.$el.html(this.template(this.model.toJSON()));
+
+                this.listenTo(this.model, 'change:fromSocialNet', this.bigRender);
+                this.listenTo(this.model, 'change', this.render);
             },
 
-            bindFieldToView: function () {
+            bigRender: function () {
+                this.$el.html(this.template(this.model.toJSON()));
+
+                this.$userName = this.$('#userName');
                 this.$newName = this.$('#newName');
+                this.$userEmail = this.$('#userEmail');
                 this.$newEmail = this.$('#newEmail');
                 this.$changePassOld = this.$('#changePassOld');
                 this.$changePassNew = this.$('#changePassNew');
@@ -42,8 +41,8 @@ define(['backbone',
             },
 
             render: function () {
-                this.$el.html(this.template(this.model.toJSON()));
-                this.bindFieldToView();
+                this.$userName.text(this.model.get('name'));
+                this.$userEmail.text(this.model.get('email'));
             },
 
             resetWaiter: function () {
