@@ -1,7 +1,13 @@
 ﻿<div class="container">
   <div class="row">
     <div class="col-md-8 col-md-offset-4">
-      <div id="localWaiter" class="local-waiter <% if (!waiter) { %>gm-hidden<% } %>">
+      <div id="simpleAlert"></div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-8 col-md-offset-4">
+      <div id="localWaiter" class="local-waiter gm-hidden">
         <div class="local-waiter-field">
           <div class="local-waiter-el">
             <img src="img/upload.gif" alt="" class="local-waiter-img">
@@ -61,7 +67,7 @@
             <div class="panel-body">
               <div class="form-group">
                 <div class="help-block">
-                    В данный момент Ваш Email "<span id="userEmail">"<%- name%>"</span><%- email %>". Для изменения E-mail используйте поле ниже
+                    В данный момент Ваш Email "<span id="userEmail">"<%- name%>"</span>". Для изменения E-mail используйте поле ниже
                 </div>
                 <input class="form-control" id="newEmail" placeholder="Новый E-mail" type="text"
                        value="<%- newEmail %>">

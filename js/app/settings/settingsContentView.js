@@ -1,6 +1,10 @@
 define(['backbone',
+        'app/simpAlert/simpAlertView',
+        'app/simpAlert/simpAlertModel',
         'text!templates/settings/settingsContentTemplate.html'],
     function (Backbone,
+              SimpAlertView,
+              SimpAlertModel,
               template) {
         'use strict';
         var View = Backbone.View.extend({
@@ -24,11 +28,14 @@ define(['backbone',
 
                 this.listenTo(this.model, 'change:fromSocialNet', this.bigRender);
                 this.listenTo(this.model, 'change', this.render);
+                this.listenTo(this.model, 'change:massage', this.showMessage);
+                this.listenTo(this.model, 'sync', this.waiterOff);
+                this.listenTo(this.model, 'invalid', this.showMessage);
             },
 
             bigRender: function () {
                 this.$el.html(this.template(this.model.toJSON()));
-
+                this.$simpleAlert = this.$('#simpleAlert');
                 this.$userName = this.$('#userName');
                 this.$newName = this.$('#newName');
                 this.$userEmail = this.$('#userEmail');
@@ -38,6 +45,7 @@ define(['backbone',
                 this.$confirmChangePassNew = this.$('#confirmChangePassNew');
                 this.$confirmDelete = this.$('#confirmDelete');
                 this.$passForDelete = this.$('#passForDelete');
+                this.$localWaiter = this.$('#localWaiter');
             },
 
             render: function () {
@@ -45,25 +53,29 @@ define(['backbone',
                 this.$userEmail.text(this.model.get('email'));
             },
 
-            resetWaiter: function () {
-                this.model.set('waiter', false);
+            showMessage: function (model, error) {
+                this.waiterOff();
+                this.$simpleAlert.append(
+                    new SimpAlertView({
+                        model: new SimpAlertModel({
+                            type: error.type,
+                            textAlert: error.textAlert
+                        })
+                    }).render().el
+                );
+            },
+
+            waiterOff: function () {
+                this.$localWaiter.hide();
             },
 
             changeName: function () {
+                this.$localWaiter.show();
+                this.model.unset('message', {silent: true}); // delete message
                 this.model.set({
-                    'needWalidate': true,
-                    'waiter': true,
                     'storedParameter': 'name',
                     'newName': this.$newName.val().trim()
-                }).save("", "", {
-                    'wait': true,
-                    success: function () {
-                        this.resetWaiter();
-                    }.bind(this),
-                    error: function () {
-                        this.resetWaiter();
-                    }.bind(this)
-                });
+                }, {silent: true}).save();
             },
 
             keypressOnNewName: function (e) {
@@ -74,19 +86,12 @@ define(['backbone',
             },
 
             changeEmail: function () {
+                this.$localWaiter.show();
+                this.model.unset('message', {silent: true}); // delete message
                 this.model.set({
-                    'needWalidate': true,
-                    'waiter': true,
                     'storedParameter': 'email',
                     'newEmail': this.$newEmail.val().trim()
-                }).save("", "", {
-                    'success': function () {
-                        this.resetWaiter();
-                    }.bind(this),
-                    'error': function () {
-                        this.resetWaiter();
-                    }.bind(this)
-                });
+                }, {silent: true}).save();
             },
 
             keypressOnNewEmail: function (e) {
@@ -97,21 +102,14 @@ define(['backbone',
             },
 
             changePassword: function () {
+                this.$localWaiter.show();
+                this.model.unset('message', {silent: true}); // delete message
                 this.model.set({
-                    'needWalidate': true,
-                    'waiter': true,
                     'storedParameter': 'password',
                     'changePassOld': this.$changePassOld.val().trim(),
                     'changePassNew': this.$changePassNew.val().trim(),
                     'confirmChangePassNew': this.$confirmChangePassNew.val().trim()
-                }).save("", "", {
-                    'success': function () {
-                        this.resetWaiter();
-                    }.bind(this),
-                    'error': function () {
-                        this.resetWaiter();
-                    }.bind(this)
-                });
+                }, {silent: true}).save();
             },
 
             passwordFocusHandler: function (e) {
@@ -130,20 +128,13 @@ define(['backbone',
             },
 
             deleteUser: function () {
+                this.$localWaiter.show();
+                this.model.unset('message', {silent: true}); // delete message
                 this.model.set({
-                    'needWalidate': true,
-                    'waiter': true,
                     'storedParameter': 'delete',
                     'confirmDelete': this.$confirmDelete.prop('checked'),
                     'passForDelete': this.$passForDelete.val() && this.$passForDelete.val().trim()
-                }).save("", "", {
-                    'success': function () {
-                        this.resetWaiter();
-                    }.bind(this),
-                    'error': function () {
-                        this.resetWaiter();
-                    }.bind(this)
-                });
+                }, {silent: true}).save();
             }
         });
         return View;
