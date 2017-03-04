@@ -23,7 +23,11 @@ define(['backbone',
 
                 var user = new SettingsUserModel({id: data.postData.id, emailNum: data.postData.emailNum});
 
-                user.fetch();
+                if (data.postData.id && data.postData.emailNum) {
+                    user.save();
+                } else {
+                    user.fetch();
+                }
 
                 new SettingsHeaderView({model: user}); // creating header
                 new SettingsContentView({model: user}); // creating content

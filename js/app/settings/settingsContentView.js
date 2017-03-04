@@ -28,7 +28,6 @@ define(['backbone',
 
                 this.listenTo(this.model, 'change:fromSocialNet', this.bigRender);
                 this.listenTo(this.model, 'change', this.render);
-                this.listenTo(this.model, 'change:massage', this.showMessage);
                 this.listenTo(this.model, 'sync', this.waiterOff);
                 this.listenTo(this.model, 'invalid', this.showMessage);
             },
@@ -49,17 +48,20 @@ define(['backbone',
             },
 
             render: function () {
+                this.showMessage();
                 this.$userName.text(this.model.get('name'));
                 this.$userEmail.text(this.model.get('email'));
             },
 
-            showMessage: function (model, error) {
+            showMessage: function (model, message) {
+                var currentMessage = message || this.model.get('message');
+                if(!currentMessage.textAlert) return;
                 this.waiterOff();
                 this.$simpleAlert.append(
                     new SimpAlertView({
                         model: new SimpAlertModel({
-                            type: error.type,
-                            textAlert: error.textAlert
+                            type: currentMessage.type,
+                            textAlert: currentMessage.textAlert
                         })
                     }).render().el
                 );
