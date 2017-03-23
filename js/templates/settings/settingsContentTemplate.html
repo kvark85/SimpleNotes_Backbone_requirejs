@@ -1,7 +1,13 @@
 ﻿<div class="container">
   <div class="row">
     <div class="col-md-8 col-md-offset-4">
-      <div id="localWaiter" class="local-waiter <% if (!waiter) { %>gm-hidden<% } %>">
+      <div id="simpleAlert"></div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-8 col-md-offset-4">
+      <div id="localWaiter" class="local-waiter gm-hidden">
         <div class="local-waiter-field">
           <div class="local-waiter-el">
             <img src="img/upload.gif" alt="" class="local-waiter-img">
@@ -20,18 +26,19 @@
                  data-toggle="collapse"
                  data-parent="#accordion"
                  href="#collapseName"
-                 aria-expanded="<% if (storedParameter === 'name') { %>true<% } else { %>false<% } %>"
+                 aria-expanded="false"
                  aria-controls="collapseName">
                 Изменить имя
               </a>
             </h4>
           </div>
-          <div id="collapseName" class="panel-collapse collapse <% if (storedParameter === 'name') { %>in<% } %>"
+          <div id="collapseName" class="panel-collapse collapse"
                role="tabpanel" aria-labelledby="headingName">
             <div class="panel-body">
               <div class="form-group">
-                <span
-                  class="help-block">Ваше текушее имя "<%- name%>". Вы можете изменить его, используя поле ниже</span>
+                  <div class="help-block">
+                      Ваше текушее имя <span id="userName">"<%- name%>"</span>. Вы можете изменить его, используя поле ниже
+                  </div>
                 <input class="form-control" id="newName" placeholder="Новое имя" type="text" value="">
               </div>
               <button id="saveName" type="submit" class="btn btn-info">Изменить имя</button>
@@ -49,17 +56,19 @@
                  data-toggle="collapse"
                  data-parent="#accordion"
                  href="#collapseEmail"
-                 aria-expanded="<% if (storedParameter === 'email') { %>true<% } else { %>false<% } %>"
+                 aria-expanded="false>"
                  aria-controls="collapseEmail">
                 Изменить E-mail
               </a>
             </h4>
           </div>
-          <div id="collapseEmail" class="panel-collapse collapse <% if (storedParameter === 'email') { %>in<% } %>"
+          <div id="collapseEmail" class="panel-collapse collapse"
                role="tabpanel" aria-labelledby="headingEmail">
             <div class="panel-body">
               <div class="form-group">
-                <span class="help-block">В данный момент Ваш Email "<%- email %>". Для изменения E-mail используйте поле ниже</span>
+                <div class="help-block">
+                    В данный момент Ваш Email "<span id="userEmail">"<%- name%>"</span>". Для изменения E-mail используйте поле ниже
+                </div>
                 <input class="form-control" id="newEmail" placeholder="Новый E-mail" type="text"
                        value="<%- newEmail %>">
               </div>
@@ -78,14 +87,14 @@
                  data-toggle="collapse"
                  data-parent="#accordion"
                  href="#collapsePassword"
-                 aria-expanded="<% if (storedParameter === 'password') { %>true<% } else { %>false<% } %>"
+                 aria-expanded="false"
                  aria-controls="collapsePassword">
                 Изменить пароль
               </a>
             </h4>
           </div>
           <div id="collapsePassword"
-               class="panel-collapse collapse <% if (storedParameter === 'password') { %>in<% } %>" role="tabpanel"
+               class="panel-collapse collapse" role="tabpanel"
                aria-labelledby="headingPassword">
             <div class="panel-body">
               <div class="form-group">
@@ -115,7 +124,7 @@
                  data-toggle="collapse"
                  data-parent="#accordion"
                  href="#collapseDelete"
-                 aria-expanded="<% if (storedParameter === 'delete') { %>true<% } else { %>false<% } %>"
+                 aria-expanded="false"
                  aria-controls="collapseDelete">
                 Удалить пользователя
               </a>
