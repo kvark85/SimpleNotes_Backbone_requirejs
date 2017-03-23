@@ -30,6 +30,7 @@ define(['backbone',
                 this.listenTo(this.model, 'change', this.render);
                 this.listenTo(this.model, 'sync', this.waiterOff);
                 this.listenTo(this.model, 'invalid', this.showMessage);
+                this.listenTo(this.model, 'destroy', this.goToLogin);
             },
 
             bigRender: function () {
@@ -136,7 +137,15 @@ define(['backbone',
                     'storedParameter': 'delete',
                     'confirmDelete': this.$confirmDelete.prop('checked'),
                     'passForDelete': this.$passForDelete.val() && this.$passForDelete.val().trim()
-                }, {silent: true}).save();
+                }, {silent: true}).destroy({
+                    success: function(model, response) {
+                        alert(222);
+                    }
+                });
+            },
+
+            goToLogin: function () {
+               alert(111);
             }
         });
         return View;
