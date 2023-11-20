@@ -1,0 +1,34 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm-6 col-sm-offset-5">
+      <div class="form-group">
+        <label for="login">Ник</label>
+        <input class="form-control" id="login" placeholder="Ник" type="text" value="<%= login %>">
+        <span class="help-block">(тестовый логин: "www")</span>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Пароль</label>
+        <input class="form-control" id="password" placeholder="Пароль" type="password" value="<%= password %>">
+        <span class="help-block">(тестовый пароль: "123")</span>
+      </div>
+
+      <div class="checkbox">
+        <label>
+          <input id="needForgot" type="checkbox" <%= (needForgot == '1') ? 'checked="checked"' : '' %> />Запомнить меня
+        </label>
+      </div>
+
+      <button id="submitButton" type="submit" class="btn btn-info">Войти</button>
+
+      <span class="help-block">Или войдите используя профиль VK</span>
+
+      <div id="vk_auth"></div>
+
+      <div class="gm-vertical-margin-row">
+        <a class="btn btn-default btn-block" href="#!/registration" role="button">Зарегистрироваться</a>
+        <a class="btn btn-default btn-block" href="#!/restorePass" role="button">Забыли пароль</a>
+      </div>
+    </div>
+  </div>
+</div>
