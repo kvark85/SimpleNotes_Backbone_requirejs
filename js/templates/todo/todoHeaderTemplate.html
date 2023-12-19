@@ -1,0 +1,33 @@
+﻿<div class="container">
+  <div class="page-header">
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <span class="navbar-brand">Simple Notes</span>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#!/todo">Заметки<span class="sr-only">(current)</span></a></li>
+          </ul>
+
+          <ul class="nav navbar-nav navbar-right">
+            <% if (photo_rec) { %>
+            <li>
+              <img class="header-avtar" src="<%- photo_rec %>" alt="">
+            </li>
+            <% } %>
+            <li><a href="#!/settings">Настройки</a></li>
+            <li><span class="header-text">Здравствуйте, <%- name %>.</span></li>
+            <li><a href="api/logout.php">Выйти</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </div>
+</div>

@@ -1,0 +1,158 @@
+﻿<div class="container">
+  <div class="row">
+    <div class="col-md-8 col-md-offset-4">
+      <div id="simpleAlert"></div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-8 col-md-offset-4">
+      <div id="localWaiter" class="local-waiter gm-hidden">
+        <div class="local-waiter-field">
+          <div class="local-waiter-el">
+            <img src="img/upload.gif" alt="" class="local-waiter-img">
+          </div>
+        </div>
+      </div>
+
+      <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+        <% if (!fromSocialNet) { %>
+        <!-- Блок изменения имени Start -->
+        <div class="panel panel-default">
+          <div class="panel-heading m-setting-heading" role="tab" id="headingName">
+            <h4 class="panel-title">
+              <a class="collapsed m-setting-collapsed"
+                 role="button"
+                 data-toggle="collapse"
+                 data-parent="#accordion"
+                 href="#collapseName"
+                 aria-expanded="false"
+                 aria-controls="collapseName">
+                Изменить имя
+              </a>
+            </h4>
+          </div>
+          <div id="collapseName" class="panel-collapse collapse"
+               role="tabpanel" aria-labelledby="headingName">
+            <div class="panel-body">
+              <div class="form-group">
+                  <div class="help-block">
+                      Ваше текушее имя <span id="userName">"<%- name%>"</span>. Вы можете изменить его, используя поле ниже
+                  </div>
+                <input class="form-control" id="newName" placeholder="Новое имя" type="text" value="">
+              </div>
+              <button id="saveName" type="submit" class="btn btn-info">Изменить имя</button>
+              </div>
+            </div>
+          </div>
+        <!-- Блок изменения имени End -->
+
+        <!-- Блок изменения E-mail Start -->
+        <div class="panel panel-default">
+          <div class="panel-heading m-setting-heading" role="tab" id="headingEmail">
+            <h4 class="panel-title">
+              <a class="collapsed m-setting-collapsed"
+                 role="button"
+                 data-toggle="collapse"
+                 data-parent="#accordion"
+                 href="#collapseEmail"
+                 aria-expanded="false>"
+                 aria-controls="collapseEmail">
+                Изменить E-mail
+              </a>
+            </h4>
+          </div>
+          <div id="collapseEmail" class="panel-collapse collapse"
+               role="tabpanel" aria-labelledby="headingEmail">
+            <div class="panel-body">
+              <div class="form-group">
+                <div class="help-block">
+                    В данный момент Ваш Email "<span id="userEmail">"<%- name%>"</span>". Для изменения E-mail используйте поле ниже
+                </div>
+                <input class="form-control" id="newEmail" placeholder="Новый E-mail" type="text"
+                       value="<%- newEmail %>">
+              </div>
+              <button id="saveEmail" type="submit" class="btn btn-info">Сохранить E-mail</button>
+              </div>
+            </div>
+          </div>
+        <!-- Блок изменения E-mail Start -->
+
+        <!-- Блок изменения пароля Start -->
+        <div class="panel panel-default">
+          <div class="panel-heading m-setting-heading" role="tab" id="headingPassword">
+            <h4 class="panel-title">
+              <a class="collapsed m-setting-collapsed"
+                 role="button"
+                 data-toggle="collapse"
+                 data-parent="#accordion"
+                 href="#collapsePassword"
+                 aria-expanded="false"
+                 aria-controls="collapsePassword">
+                Изменить пароль
+              </a>
+            </h4>
+          </div>
+          <div id="collapsePassword"
+               class="panel-collapse collapse" role="tabpanel"
+               aria-labelledby="headingPassword">
+            <div class="panel-body">
+              <div class="form-group">
+                <input class="form-control" id="changePassOld" placeholder="Старый пароль" type="password"
+                       value="<%- changePassOld %>">
+              </div>
+              <div class="form-group">
+                <input class="form-control" id="changePassNew" placeholder="Новый пароль" type="password"
+                       value="<%- changePassNew %>">
+              </div>
+              <div class="form-group">
+                <input class="form-control" id="confirmChangePassNew" placeholder="Новый пароль еще раз" type="password"
+                       value="<%- confirmChangePassNew %>">
+              </div>
+              <button id="savePassword" type="submit" class="btn btn-info">Сохранить пароль</button>
+              </div>
+            </div>
+          </div>
+        <!-- Блок изменения пароля End -->
+        <% } %>
+        <!-- Блок удаления пользователя Start -->
+        <div class="panel panel-default">
+          <div class="panel-heading m-setting-heading" role="tab" id="headingDelete">
+            <h4 class="panel-title">
+              <a class="collapsed m-setting-collapsed"
+                 role="button"
+                 data-toggle="collapse"
+                 data-parent="#accordion"
+                 href="#collapseDelete"
+                 aria-expanded="false"
+                 aria-controls="collapseDelete">
+                Удалить пользователя
+              </a>
+            </h4>
+          </div>
+          <div id="collapseDelete" class="panel-collapse collapse <% if (storedParameter === 'delete') { %>in<% } %>"
+               role="tabpanel" aria-labelledby="headingDelete">
+            <div class="panel-body">
+              Вы действительно хотите удалить пользователя?
+              <div class="checkbox">
+                <label>
+                  <input id="confirmDelete" type="checkbox" <% if (confirmDelete) { %>checked<% } %>/> Да,я
+                  действительно хочу удалить пользователя.
+                </label>
+              </div>
+              <% if (!fromSocialNet) { %>
+              <div class="form-group">
+                <input class="form-control" id="passForDelete" placeholder="Введите пароль" type="password"
+                       value="<%- passForDelete %>">
+              </div>
+              <% } %>
+              <button id="doDelete" type="submit" class="btn btn-info">Удалить пользователя</button>
+            </div>
+          </div>
+        </div>
+        <!-- Блок удаления пользователя End -->
+      </div>
+    </div>
+  </div>
+</div>
+
